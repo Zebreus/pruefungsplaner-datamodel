@@ -1,0 +1,3 @@
+[submodule "qt-json-serialization"]
+	path = qt-json-serialization
+	url = git@github.com:Zebreus/qt-json-serialization.git

@@ -5,6 +5,8 @@ CONFIG += staticlib
 
 CONFIG += c++11
 
+INCLUDEPATH += qt-json-serialization/src
+
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -23,7 +25,8 @@ SOURCES += \
         src/plan.cpp \
         src/semester.cpp \
         src/timeslot.cpp \
-        src/week.cpp
+        src/week.cpp \
+        qt-json-serialization/src/serializabledataobject.cpp
 
 HEADERS += \
     src/day.h \
@@ -32,7 +35,8 @@ HEADERS += \
     src/plan.h \
     src/semester.h \
     src/timeslot.h \
-    src/week.h
+    src/week.h \
+    qt-json-serialization/src/serializabledataobject.h
 
 # Default rules for deployment.
 unix {
