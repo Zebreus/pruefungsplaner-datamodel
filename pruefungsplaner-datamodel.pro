@@ -17,10 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    pruefungsplanerdatamodel.cpp
+        src/day.cpp \
+        src/group.cpp \
+        src/module.cpp \
+        src/plan.cpp \
+        src/semester.cpp \
+        src/timeslot.cpp \
+        src/week.cpp
 
 HEADERS += \
-    pruefungsplanerdatamodel.h
+    src/day.h \
+    src/group.h \
+    src/module.h \
+    src/plan.h \
+    src/semester.h \
+    src/timeslot.h \
+    src/week.h
 
 # Default rules for deployment.
 unix {
