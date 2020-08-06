@@ -2,7 +2,7 @@ INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD
 
 CONFIG += c++11
-include($$PWD/qt-json-serialization/qt-json-serialization.pri)
+include($$PWD/libs/qt-json-serialization/qt-json-serialization.pri)
 
 SOURCES += \
     $$PWD/src/day.cpp \
