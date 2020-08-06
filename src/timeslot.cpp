@@ -1,5 +1,6 @@
-#include "timeslot.h"
-#include "module.h"
+#include <timeslot.h>
+#include <module.h>
+
 class Module;
 
 Timeslot::Timeslot(QObject *parent) : SerializableDataObject(parent)

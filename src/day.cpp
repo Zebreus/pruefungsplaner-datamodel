@@ -1,4 +1,4 @@
-#include "day.h"
+#include <day.h>
 
 Day::Day(QObject *parent) : SerializableDataObject(parent)
 {

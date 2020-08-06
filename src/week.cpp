@@ -1,4 +1,4 @@
-#include "week.h"
+#include <week.h>
 
 Week::Week(QObject *parent) : SerializableDataObject(parent)
 {

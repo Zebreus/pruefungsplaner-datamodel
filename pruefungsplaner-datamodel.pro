@@ -5,7 +5,11 @@ CONFIG += staticlib
 
 CONFIG += c++11
 
-INCLUDEPATH += qt-json-serialization/src
+INCLUDEPATH += $$PWD/include
+
+include($$PWD/qt-json-serialization/qt-json-serialization.pri)
+
+# INCLUDEPATH += qt-json-serialization/src
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,24 +23,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        src/day.cpp \
-        src/group.cpp \
-        src/module.cpp \
-        src/plan.cpp \
-        src/semester.cpp \
-        src/timeslot.cpp \
-        src/week.cpp \
-        qt-json-serialization/src/serializabledataobject.cpp
+    src/day.cpp \
+    src/group.cpp \
+    src/module.cpp \
+    src/plan.cpp \
+    src/semester.cpp \
+    src/timeslot.cpp \
+    src/week.cpp
 
 HEADERS += \
-    src/day.h \
-    src/group.h \
-    src/module.h \
-    src/plan.h \
-    src/semester.h \
-    src/timeslot.h \
-    src/week.h \
-    qt-json-serialization/src/serializabledataobject.h
+    include/day.h \
+    include/group.h \
+    include/module.h \
+    include/plan.h \
+    include/semester.h \
+    include/timeslot.h \
+    include/week.h
 
 # Default rules for deployment.
 unix {

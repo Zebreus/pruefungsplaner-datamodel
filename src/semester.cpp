@@ -1,4 +1,4 @@
-#include "semester.h"
+#include <semester.h>
 
 Semester::Semester(QObject *parent) : SerializableDataObject(parent)
 {

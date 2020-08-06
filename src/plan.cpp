@@ -1,4 +1,4 @@
-#include "plan.h"
+#include <plan.h>
 
 Plan::Plan(QObject *parent) : SerializableDataObject(parent)
 {
