@@ -4,6 +4,7 @@ Plan::Plan(QObject *parent) : SerializableDataObject(parent)
 {
 
 }
+
 QString Plan::name()
 {
     return planName;
@@ -64,22 +65,23 @@ void Plan::setWeeks(QList<Week*> weeks)
 }
 
 void Plan::addNewGroup(QString name){
+    //TODO determine, why the test code was uncommented previously
+/*
+    Group* gp = new Group(this);
+    gp->setName("testname");
+    qDebug() << weeks.first()->getDays().first()->getTimeslots().first()->getActiveGroups().size();
+    QJsonObject a = weeks.first()->getDays().first()->getTimeslots().first()->toJsonObject();
+    Timeslot* ts = new Timeslot(weeks.first()->getDays().first());
+    ts->fromJsonObject(a);
+    QJsonObject b = ts->toJsonObject();
+    qDebug() << a;
+    qDebug() << b;
+*/
 
-      Group* gp = new Group(this);
-      gp->setName("testname");
-
-      qDebug() << weeks.first()->getDays().first()->getTimeslots().first()->getActiveGroups().size();
-      QJsonObject a = weeks.first()->getDays().first()->getTimeslots().first()->toJsonObject();
-      Timeslot* ts = new Timeslot(weeks.first()->getDays().first());
-      ts->fromJsonObject(a);
-      QJsonObject b = ts->toJsonObject();
-      qDebug() << a;
-      qDebug() << b;
-
-//    Group* gp = new Group(this);
-//    gp->setName(name);
-//    groups.append(gp);
-//    emit groupsChanged(this->groups);
+    Group* gp = new Group(this);
+    gp->setName(name);
+    groups.append(gp);
+    emit groupsChanged(this->groups);
 }
 
 void Plan::removeGroup(Group* gp){
