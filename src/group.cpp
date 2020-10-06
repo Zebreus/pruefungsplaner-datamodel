@@ -33,7 +33,19 @@ void Group::setSelected(const bool selected)
     emit selectedChanged();
 }
 
+unsigned int Group::getExamsPerDay()
+{
+    return examsPerDay;
+}
 
+void Group::setExamsPerDay(unsigned int examsPerDay)
+{
+    if (examsPerDay == this->examsPerDay)
+        return;
+
+    this->examsPerDay = examsPerDay;
+    emit examsPerDayChanged();
+}
 
 void Group::fromJsonObject(const QJsonObject &content)
 {
