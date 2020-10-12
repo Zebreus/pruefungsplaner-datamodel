@@ -1,9 +1,6 @@
 QT -= gui
 
-TEMPLATE = lib
-CONFIG += staticlib
-
-CONFIG += c++11
+CONFIG += c++17
 
 INCLUDEPATH += $$PWD/include
 
@@ -22,7 +19,8 @@ SOURCES += \
     src/plan.cpp \
     src/semester.cpp \
     src/timeslot.cpp \
-    src/week.cpp
+    src/week.cpp \
+    src/plancsvhelper.cpp
 
 HEADERS += \
     include/day.h \
@@ -31,10 +29,39 @@ HEADERS += \
     include/plan.h \
     include/semester.h \
     include/timeslot.h \
-    include/week.h
+    include/week.h \
+    include/plancsvhelper.h
 
-# Default rules for deployment.
-unix {
-    target.path = $$[QT_INSTALL_PLUGINS]/generic
+test{
+    include(libs/gtest/gtest_dependency.pri)
+
+    QT += testlib
+    TEMPLATE = app
+    TARGET = pruefungsplaner-datamodel-tests
+
+    CONFIG += thread
+    CONFIG -= app_bundle
+    LIBS += -lgtest -lgtest_main
+    INCLUDEPATH += src
+
+    SOURCES += tests/qthelper.cpp \
+            tests/plancsvhelpertest.cpp \
+            tests/testdatatest.cpp
+    HEADERS += tests/testdatahelper.h
+
+    # Default rules for test deployment.
+    qnx: target.path = /tmp/$${TARGET}/bin
+    else: unix:!android: target.path = /opt/$${TARGET}/bin
+    !isEmpty(target.path): INSTALLS += target
 }
-!isEmpty(target.path): INSTALLS += target
+else{
+    TEMPLATE = lib
+    CONFIG += staticlib
+    TARGET = pruefungsplaner-datamodel
+
+    # Default rules for library deployment.
+    unix {
+        target.path = $$[QT_INSTALL_PLUGINS]/generic
+    }
+    !isEmpty(target.path): INSTALLS += target
+}
