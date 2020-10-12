@@ -11,7 +11,7 @@
 #include <QTemporaryDir>
 #include <QTextStream>
 #include "plan.h"
-#include "plancsvhelper.h"
+#include <plancsvhelper.h>
 #include "qthelper.cpp"
 #include "testdatahelper.h"
 
