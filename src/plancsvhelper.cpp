@@ -97,24 +97,6 @@ bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
     planningExamsResultFile.close();
     return false;
   }
-  /*
-  QString firstLine = fileStream.readLine();
-  if (firstLine == "") {
-    return false;
-  }
-  QList<QString> firstWords = firstLine.split(";");
-  if (firstWords.size() != 9) {
-    return false;
-  }
-  if (firstWords[0] != "BelegNr" || firstWords[1] != "Zug" ||
-      firstWords[2] != "Modul" || firstWords[3] != "Import" ||
-      firstWords[4] != QString("Prüfungsform") ||
-      firstWords[5] != "Zuordnung" || firstWords[6] != "Tag" ||
-      firstWords[6] != "Tag" || firstWords[7] != "Block" ||
-      firstWords[8] != "") {
-    return false;
-  }
-  */
 
   // The modules will only be added to the slots, if the file is correct. Until
   // then they will be stored here.
@@ -143,8 +125,10 @@ bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
     for (Module* module : plan->modules) {
       if (module->getNumber() == moduleNumber) {
         if (module->getName() == words[2]) {
-          matchingModule = module;
-          break;
+          if (module->getExamType() == words[4]) {
+            matchingModule = module;
+            break;
+          }
         }
       }
     }
@@ -318,9 +302,14 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
     fileStream << module->getName() << ";";
     fileStream << module->getNumber() << ";";
     fileStream << module->getOrigin() << ";";
-    // TODO find out what K or P means and add to datamodel
-    fileStream << "K"
-               << ";";
+
+    if (module->getExamType() == "K" || module->getExamType() == "P") {
+      fileStream << module->getExamType() << ";";
+    } else {
+      examsFile.close();
+      return false;
+    }
+
     // TODO add duration to datamodel and add it here
     fileStream << "";
 
@@ -449,9 +438,12 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
             fileStream << "1";
           }
           fileStream << ";";
-          // TODO add Pruefungsform to datamodel
-          fileStream << "K"
-                     << ";";
+          if (module->getExamType() == "K" || module->getExamType() == "P") {
+            fileStream << module->getExamType() << ";";
+          } else {
+            planningExamsResultFile.close();
+            return false;
+          }
           for (Group* group : module->getGroups()) {
             fileStream << group->name() << "/";
           }
@@ -617,6 +609,14 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
         return false;
       }
     }
+
+    if (words[5] == "P" || words[5] == "K") {
+      module->setExamType(words[5]);
+    } else {
+      examsFile.close();
+      return false;
+    }
+
     plan->modules.append(module);
 
     words = fileStream.readLine().split(";");

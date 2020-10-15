@@ -3,6 +3,7 @@
 
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
+#include <plancsvhelper.h>
 #include <QDir>
 #include <QFile>
 #include <QJsonDocument>
@@ -11,7 +12,6 @@
 #include <QTemporaryDir>
 #include <QTextStream>
 #include "plan.h"
-#include <plancsvhelper.h>
 #include "qthelper.cpp"
 #include "testdatahelper.h"
 
@@ -318,6 +318,27 @@ TEST(planCsvHelperTests, writePlanWritesProbablyCorrectScheduleFile) {
     lineCount++;
   }
   EXPECT_EQ(lineCount, 3);
+}
+
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamType) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  QString firstExamType = plan->getModules()[0]->getExamType();
+  QString newFirstExamType = firstExamType == "K" ? "P" : "K";
+  plan->getModules()[0]->setExamType(newFirstExamType);
+  plan->getModules()[1]->setExamType("K");
+  plan->getModules()[2]->setExamType("P");
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the module order will be the same
+  ASSERT_EQ(readPlan->getModules()[0]->getExamType(), newFirstExamType);
+  ASSERT_EQ(readPlan->getModules()[1]->getExamType(), "K");
+  ASSERT_EQ(readPlan->getModules()[2]->getExamType(), "P");
+
+  // TODO assert that the results file also contains the correct values
 }
 
 #endif  // TEST_CPP
