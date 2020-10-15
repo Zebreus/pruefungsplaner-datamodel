@@ -598,7 +598,9 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
       bool foundGroup = false;
       for (Group* group : plan->getGroups()) {
         if (group->getName() == groupName) {
-          module->getGroups().append(group);
+          auto groups = module->getGroups();
+          groups.append(group);
+          module->setGroups(groups);
           foundGroup = true;
           break;
         }
@@ -613,7 +615,9 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     if (words[0] != "") {
       for (Group* constraint : plan->getConstraints()) {
         if (constraint->getName() == words[0]) {
-          module->getConstraints().append(constraint);
+          auto constraints = module->getConstraints();
+          constraints.append(constraint);
+          module->setGroups(constraints);
           foundConstraint = true;
           break;
         }
