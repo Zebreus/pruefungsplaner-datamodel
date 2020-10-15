@@ -214,9 +214,8 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
   fileStream << "-ENDE-\n";
 
   fileStream << QString("Maximale Prü/Tag;");
-  for (int i = 0; i < plan->constraints.size(); i++) {
-    // TODO add option for max exams per day for constraints to datamodel
-    fileStream << "6;";
+  for (Group* constraint : plan->constraints) {
+    fileStream << constraint->getExamsPerDay() << ";";
   }
   fileStream << "\n";
 
@@ -336,8 +335,8 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
   fileStream << "-ENDE-\n";
 
   fileStream << QString("Maximale Prü/Tag;");
-  for (int i = 0; i < plan->groups.size(); i++) {
-    fileStream << "2;";
+  for (Group* group : plan->groups) {
+    fileStream << group->getExamsPerDay() << ";";
   }
   fileStream << "\n";
 
@@ -512,7 +511,7 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
 
   QList<Group*> groups;
 
-  // Read and check first line
+  // Read and check first two lines
   int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
   if (firstLine.size() < 2 || firstLine[0] != "Block" ||
@@ -520,20 +519,27 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
     examsIntervalsFile.close();
     return false;
   }
-  for (int i = 1; i < firstLine.size() - 1; i++) {
-    Group* group = new Group(plan.get());
-    group->setName(firstLine[i]);
-    plan->constraints.append(group);
-    groups.append(group);
-  }
   wordsPerLine = firstLine.size();
-
-  // Read and check second line
   QList<QString> secondLine = fileStream.readLine().split(";");
   if (secondLine.size() != wordsPerLine ||
       secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
     examsIntervalsFile.close();
     return false;
+  }
+
+  for (int i = 1; i < firstLine.size() - 1; i++) {
+    Group* group = new Group(plan.get());
+    group->setName(firstLine[i]);
+    bool parseIntWorked;
+    unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
+    if (!parseIntWorked) {
+      examsIntervalsFile.close();
+      return false;
+    } else {
+      group->setExamsPerDay(examsPerDay);
+    }
+    plan->constraints.append(group);
+    groups.append(group);
   }
 
   // Read a line for each timeslot
@@ -650,28 +656,34 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
 
   QList<Group*> groups;
 
-  // Read and check first line
-  int wordsPerLine;
+  // Read and check first two lines
   QList<QString> firstLine = fileStream.readLine().split(";");
   if (firstLine.size() < 2 || firstLine[0] != "Block" ||
       firstLine.last() != "-ENDE-") {
     groupsExamsFile.close();
     return false;
   }
-  for (int i = 1; i < firstLine.size() - 1; i++) {
-    Group* group = new Group(plan.get());
-    group->setName(firstLine[i]);
-    plan->groups.append(group);
-    groups.append(group);
-  }
-  wordsPerLine = firstLine.size();
-
-  // Read and check second line
+  int wordsPerLine = firstLine.size();
   QList<QString> secondLine = fileStream.readLine().split(";");
   if (secondLine.size() != wordsPerLine ||
       secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
     groupsExamsFile.close();
     return false;
+  }
+
+  for (int i = 1; i < firstLine.size() - 1; i++) {
+    Group* group = new Group(plan.get());
+    group->setName(firstLine[i]);
+    bool parseIntWorked;
+    unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
+    if (!parseIntWorked) {
+      groupsExamsFile.close();
+      return false;
+    } else {
+      group->setExamsPerDay(examsPerDay);
+    }
+    plan->groups.append(group);
+    groups.append(group);
   }
 
   // Read a line for each timeslot

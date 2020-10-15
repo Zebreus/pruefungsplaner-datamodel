@@ -360,4 +360,34 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamDuration) {
   ASSERT_EQ(readPlan->getModules()[2]->getExamDuration(), 3);
 }
 
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesExamsPerDay) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  unsigned int constraintsExamsPerDay =
+      plan->getConstraints()[0]->getExamsPerDay();
+  constraintsExamsPerDay++;
+  plan->getConstraints()[0]->setExamsPerDay(constraintsExamsPerDay);
+  plan->getConstraints()[1]->setExamsPerDay(7);
+  plan->getConstraints()[2]->setExamsPerDay(5);
+
+  unsigned int groupsExamsPerDay = plan->getGroups()[0]->getExamsPerDay();
+  groupsExamsPerDay += 5;
+  plan->getGroups()[0]->setExamsPerDay(groupsExamsPerDay);
+  plan->getGroups()[1]->setExamsPerDay(9);
+  plan->getGroups()[2]->setExamsPerDay(8);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the order will be the same
+  ASSERT_EQ(readPlan->getConstraints()[0]->getExamsPerDay(),
+            constraintsExamsPerDay);
+  ASSERT_EQ(readPlan->getConstraints()[1]->getExamsPerDay(), 7);
+  ASSERT_EQ(readPlan->getConstraints()[2]->getExamsPerDay(), 5);
+  ASSERT_EQ(readPlan->getGroups()[0]->getExamsPerDay(), groupsExamsPerDay);
+  ASSERT_EQ(readPlan->getGroups()[1]->getExamsPerDay(), 9);
+  ASSERT_EQ(readPlan->getGroups()[2]->getExamsPerDay(), 8);
+}
+
 #endif  // TEST_CPP
