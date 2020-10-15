@@ -7,37 +7,37 @@ class Group;
 #include <QString>
 #include "serializabledataobject.h"
 
-class Group : public SerializableDataObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(bool selected READ getSelected WRITE setSelected NOTIFY selectedChanged)
-    Q_PROPERTY(unsigned int examsPerDay READ getExamsPerDay WRITE setExamsPerDay NOTIFY examsPerDayChanged)
-public:
-    using SerializableDataObject::SerializableDataObject;
-    explicit Group(QObject *parent = nullptr);
-    QString name();
-    void setName(const QString &name);
-    bool getSelected();
-    void setSelected(const bool selected);
-    unsigned int getExamsPerDay();
-    void setExamsPerDay(unsigned int newExamsPerDay);
+class Group : public SerializableDataObject {
+  using SerializableDataObject::SerializableDataObject;
+  Q_OBJECT
+  Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+  Q_PROPERTY(
+      bool selected READ getSelected WRITE setSelected NOTIFY selectedChanged)
+  Q_PROPERTY(unsigned int examsPerDay READ getExamsPerDay WRITE setExamsPerDay
+                 NOTIFY examsPerDayChanged)
+ public:
+  explicit Group(QObject* parent = nullptr);
 
-signals:
-    void nameChanged();
-    void selectedChanged();
-    void examsPerDayChanged();
+  // SerializableDataObject interface
+  void fromJsonObject(const QJsonObject& content);
+  QJsonObject toJsonObject() const;
 
-private:
-    QString constraintName;
-    bool selected;
-    unsigned int examsPerDay;
+  QString getName() const;
+  void setName(const QString& name);
+  bool getSelected() const;
+  void setSelected(const bool selected);
+  unsigned int getExamsPerDay() const;
+  void setExamsPerDay(unsigned int newExamsPerDay);
 
+ signals:
+  void nameChanged(const QString name);
+  void selectedChanged(const bool selected);
+  void examsPerDayChanged(const unsigned int examsPerDay);
 
-    // SerializableDataObject interface
-public:
-    void fromJsonObject(const QJsonObject &content);
-    QJsonObject toJsonObject() const;
+ private:
+  QString name;
+  bool selected;
+  unsigned int examsPerDay;
 };
 
-#endif // CONSTRAINT_H
+#endif  // CONSTRAINT_H

@@ -209,7 +209,7 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
 
   fileStream << "Block;";
   for (auto constraint : plan->constraints) {
-    fileStream << constraint->name() << ";";
+    fileStream << constraint->getName() << ";";
   }
   fileStream << "-ENDE-\n";
 
@@ -286,14 +286,14 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
     // Only one constraint is possible, because the legacy algorithm does not
     // support more
     if (module->constraints.size() >= 1) {
-      fileStream << module->constraints[0]->name();
+      fileStream << module->constraints[0]->getName();
     }
     fileStream << ";";
 
     // TODO Check somewhere, that groupnames do not contain commas
     QString divider = "";
     for (Group* group : module->groups) {
-      fileStream << divider << group->name();
+      fileStream << divider << group->getName();
       divider = ",";
     }
     fileStream << ";";
@@ -330,7 +330,7 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
 
   fileStream << "Block;";
   for (Group* group : plan->groups) {
-    fileStream << group->name() << ";";
+    fileStream << group->getName() << ";";
   }
   fileStream << "-ENDE-\n";
 
@@ -446,7 +446,7 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
             return false;
           }
           for (Group* group : module->getGroups()) {
-            fileStream << group->name() << "/";
+            fileStream << group->getName() << "/";
           }
           // TODO find out what these words mean
           fileStream << "ALLE ("
@@ -473,14 +473,14 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
     // Only one constraint is possible, because the legacy algorithm does not
     // support more
     if (module->constraints.size() >= 1) {
-      fileStream << module->constraints[0]->name();
+      fileStream << module->constraints[0]->getName();
     }
     fileStream << ";";
 
     // TODO Check somewhere, that groupnames do not contain commas
     QString divider = "";
     for (Group* group : module->groups) {
-      fileStream << divider << group->name();
+      fileStream << divider << group->getName();
       divider = ",";
     }
     fileStream << ";";
@@ -591,7 +591,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     for (QString groupName : words[1].split(",")) {
       bool foundGroup = false;
       for (Group* group : plan->groups) {
-        if (group->name() == groupName) {
+        if (group->getName() == groupName) {
           module->groups.append(group);
           foundGroup = true;
           break;
@@ -606,7 +606,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     bool foundConstraint = false;
     if (words[0] != "") {
       for (Group* constraint : plan->constraints) {
-        if (constraint->name() == words[0]) {
+        if (constraint->getName() == words[0]) {
           module->constraints.append(constraint);
           foundConstraint = true;
           break;
