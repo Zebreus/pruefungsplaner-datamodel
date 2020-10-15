@@ -5,37 +5,34 @@ class Day;
 
 #include <QObject>
 #include <QString>
-#include "timeslot.h"
 #include "serializabledataobject.h"
+#include "timeslot.h"
 
-class Day : public SerializableDataObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QList<Timeslot*> timeslots READ getTimeslots WRITE setTimeslots NOTIFY timeslotsChanged)
-public:
-    Q_INVOKABLE explicit Day(QObject *parent = nullptr);
-    using SerializableDataObject::SerializableDataObject;
+class Day : public SerializableDataObject {
+  using SerializableDataObject::SerializableDataObject;
+  Q_OBJECT
+  Q_PROPERTY(QString getName READ getName WRITE setName NOTIFY nameChanged)
+  Q_PROPERTY(QList<Timeslot*> timeslots READ getTimeslots WRITE setTimeslots
+                 NOTIFY timeslotsChanged)
+ public:
+  explicit Day(QObject* parent = nullptr);
 
-    QString name();
-    void setName(const QString &name);
-    QList<Timeslot*> getTimeslots() const;
-    void setTimeslots(QList<Timeslot*> timeslots);
+  // SerializableDataObject interface
+  void fromJsonObject(const QJsonObject& content);
+  QJsonObject toJsonObject() const;
 
-signals:
-    void nameChanged();
+  QString getName() const;
+  void setName(const QString& name);
+  QList<Timeslot*> getTimeslots() const;
+  void setTimeslots(QList<Timeslot*> timeslots);
 
-    void timeslotsChanged(QList<Timeslot*> timeslots);
+ signals:
+  void nameChanged(const QString name);
+  void timeslotsChanged(const QList<Timeslot*> timeslots);
 
-private:
-    QString dayName;
-
-    QList<Timeslot*> timeslots;
-
-    // SerializableDataObject interface
-public:
-    void fromJsonObject(const QJsonObject &content);
-    QJsonObject toJsonObject() const;
+ private:
+  QString name;
+  QList<Timeslot*> timeslots;
 };
 
-#endif // DAY_H
+#endif  // DAY_H

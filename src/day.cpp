@@ -5,18 +5,18 @@ Day::Day(QObject *parent) : SerializableDataObject(parent)
 
 }
 
-QString Day::name()
+QString Day::getName() const
 {
-    return dayName;
+    return name;
 }
 
 void Day::setName(const QString &name)
 {
-    if (name == dayName)
+    if (this->name == name)
         return;
 
-    dayName = name;
-    emit nameChanged();
+    this->name = name;
+    emit nameChanged(name);
 }
 
 QList<Timeslot*> Day::getTimeslots() const
