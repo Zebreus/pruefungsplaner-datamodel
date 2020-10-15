@@ -19,7 +19,7 @@ isEmpty(GOOGLETEST_DIR) {
 
 requires(exists($$GTEST_SRCDIR):exists($$GMOCK_SRCDIR))
 
-DEFINES += \
+DEFINES *= \
     GTEST_LANG_CXX11
 
 !isEmpty(GTEST_SRCDIR) {
@@ -27,7 +27,7 @@ DEFINES += \
         $$GTEST_SRCDIR \
         $$GTEST_SRCDIR/include
 
-    SOURCES += \
+    SOURCES *= \
         $$GTEST_SRCDIR/src/gtest-all.cc
 }
 
@@ -36,6 +36,6 @@ DEFINES += \
         $$GMOCK_SRCDIR \
         $$GMOCK_SRCDIR/include
 
-    SOURCES += \
+    SOURCES *= \
         $$GMOCK_SRCDIR/src/gmock-all.cc
 }

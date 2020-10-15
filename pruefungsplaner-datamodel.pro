@@ -35,19 +35,20 @@ HEADERS += \
 test{
     include(libs/gtest/gtest_dependency.pri)
 
-    QT += testlib
+    INCLUDEPATH += $$PWD/tests/include
+
     TEMPLATE = app
     TARGET = pruefungsplaner-datamodel-tests
 
     CONFIG += thread
     CONFIG -= app_bundle
     LIBS += -lgtest -lgtest_main
-    INCLUDEPATH += src
 
     SOURCES += tests/qthelper.cpp \
             tests/plancsvhelpertest.cpp \
             tests/testdatatest.cpp
-    HEADERS += tests/testdatahelper.h
+    HEADERS += tests/include/testdatahelper.h
+    RESOURCES += tests/testdata.qrc
 
     # Default rules for test deployment.
     qnx: target.path = /tmp/$${TARGET}/bin
@@ -65,6 +66,3 @@ else{
     }
     !isEmpty(target.path): INSTALLS += target
 }
-
-RESOURCES += \
-    tests/testdata.qrc
