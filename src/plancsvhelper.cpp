@@ -310,7 +310,9 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
       return false;
     }
 
-    // TODO add duration to datamodel and add it here
+    // The duration can also be omitted if it is 1, but we dont do that
+    fileStream << module->getExamDuration() << ";";
+
     fileStream << "";
 
     fileStream << "\n";
@@ -572,7 +574,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
       words = fileStream.readLine().split(";");
       continue;
     }
-    if (words.size() != 7) {
+    if (words.size() != 7 && words.size() != 8) {
       examsFile.close();
       return false;
     }
@@ -615,6 +617,20 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     } else {
       examsFile.close();
       return false;
+    }
+
+    if (words.size() == 8) {
+      unsigned int examDuration = words[6].toUInt();
+      // QString::toUInt returns 0 if the conversion fails. 0 also not allowed
+      // as a value for examDuration, so we can abort here
+      if (examDuration == 0) {
+        examsFile.close();
+        return false;
+      }
+      module->setExamDuration(examDuration);
+    } else {
+      // No value for examDuration implicitly means 1
+      module->setExamDuration(1);
     }
 
     plan->modules.append(module);

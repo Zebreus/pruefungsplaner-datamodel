@@ -341,4 +341,23 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamType) {
   // TODO assert that the results file also contains the correct values
 }
 
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamDuration) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  unsigned int firstExamDuration = plan->getModules()[0]->getExamDuration();
+  firstExamDuration++;
+  plan->getModules()[0]->setExamDuration(firstExamDuration);
+  plan->getModules()[1]->setExamDuration(4);
+  plan->getModules()[2]->setExamDuration(3);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the module order will be the same
+  ASSERT_EQ(readPlan->getModules()[0]->getExamDuration(), firstExamDuration);
+  ASSERT_EQ(readPlan->getModules()[1]->getExamDuration(), 4);
+  ASSERT_EQ(readPlan->getModules()[2]->getExamDuration(), 3);
+}
+
 #endif  // TEST_CPP
