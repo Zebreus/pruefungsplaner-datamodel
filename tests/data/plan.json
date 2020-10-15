@@ -4,55 +4,64 @@
             "id": 130,
             "name": "Woche1",
             "objectName": "",
-            "selected": false
+            "selected": false,
+            "examsPerDay": 2
         },
         {
             "id": 131,
             "name": "Woche2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 132,
             "name": "Woche3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 133,
             "name": "Woche1+2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 134,
             "name": "Woche2+3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 135,
             "name": "Woche1+3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 136,
             "name": "DataScience",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 137,
             "name": "Arghandiwall, Massud, I",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 138,
             "name": "Griesbaum, Alexander, I",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         }
     ],
     "groups": [
@@ -60,217 +69,253 @@
             "id": 140,
             "name": "WP_Bach",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 141,
             "name": "WP_Mast",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 142,
             "name": "I Bach 1B",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 143,
             "name": "I Bach 1C",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 144,
             "name": "I Bach 1D",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 145,
             "name": "I Bach 2A",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 146,
             "name": "I Bach 2B",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 147,
             "name": "I Bach 3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 148,
             "name": "I Bach 4",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 149,
             "name": "I Bach 5",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 150,
             "name": "I Bach 6",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 151,
             "name": "I KoSI 1",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 152,
             "name": "I KoSI 2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 153,
             "name": "I KoSI 3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 154,
             "name": "I KoSI 4",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 155,
             "name": "I KoSI 5",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 156,
             "name": "I KoSI 6",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 157,
             "name": "I KMI 1",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 158,
             "name": "I KMI 2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 159,
             "name": "I KMI 3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 160,
             "name": "I KMI 4",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 161,
             "name": "I KMI 5",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 162,
             "name": "I KMI 6",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 163,
             "name": "I KESS 1",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 164,
             "name": "I KESS 2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 165,
             "name": "I KESS 3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 166,
             "name": "I KESS 4",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 167,
             "name": "I KESS 5",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 168,
             "name": "I KESS 6",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 169,
             "name": "I KITS 1",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 170,
             "name": "I KITS 2",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 171,
             "name": "I KITS 3",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 172,
             "name": "I KITS 4",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 173,
             "name": "I KITS 5",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 174,
             "name": "I KITS 6",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 2
         },
         {
             "id": 175,
             "name": "ALLE",
             "objectName": "",
-            "selected": true
+            "selected": true,
+            "examsPerDay": 3
         }
     ],
     "id": 0,
@@ -289,7 +334,9 @@
             "name": "Netzwerke",
             "number": "30.7102",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -301,7 +348,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 1",
             "number": "30.7104,A",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -314,7 +363,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 1",
             "number": "30.7104,B",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -327,7 +378,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 1",
             "number": "30.7104,C",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -340,7 +393,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 1",
             "number": "30.7104,D",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -357,7 +412,9 @@
             "name": "Rechnerarchitektur",
             "number": "30.7106",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -374,7 +431,9 @@
             "name": "Technische Grundlagen der Informatik",
             "number": "30.7108",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -390,7 +449,9 @@
             "name": "Einf\u00fchrung in die Wirtschaftsinformatik",
             "number": "30.7114",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -408,7 +469,9 @@
             "name": "Grundlagen der diskreten Mathematik",
             "number": "30.7116",
             "objectName": "",
-            "origin": "MN"
+            "origin": "MN",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -426,7 +489,9 @@
             "name": "IT-Sicherheit",
             "number": "30.7126",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -440,7 +505,9 @@
             "name": "Mikroprozessorsysteme",
             "number": "30.7204",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -457,7 +524,9 @@
             "name": "Objektorientierte Analyse und Design",
             "number": "30.7206",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -470,7 +539,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 2",
             "number": "30.7208,A",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -482,7 +553,9 @@
             "name": "Programmieren / Algorithmen und Datenstrukturen 2",
             "number": "30.7208,B",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "P",
+            "examDuration": 2
         },
         {
             "active": true,
@@ -499,7 +572,9 @@
             "name": "IT-Recht und Datenschutz",
             "number": "30.7214",
             "objectName": "",
-            "origin": "GS"
+            "origin": "GS",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -516,7 +591,9 @@
             "name": "Lineare Algebra und Wahrscheinlichkeitsrechnung",
             "number": "30.7216",
             "objectName": "",
-            "origin": "MN"
+            "origin": "MN",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -532,7 +609,9 @@
             "name": "Betriebssysteme",
             "number": "30.7300",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -548,7 +627,9 @@
             "name": "Datenbanken 1",
             "number": "30.7312",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -561,7 +642,9 @@
             "name": "Grundlagen der Analysis",
             "number": "30.7314",
             "objectName": "",
-            "origin": "MN"
+            "origin": "MN",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -577,7 +660,9 @@
             "name": "Nutzerzentrierte Softwareentwicklung",
             "number": "30.7316",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -593,7 +678,9 @@
             "name": "Software Engineering",
             "number": "30.7318",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -607,7 +694,9 @@
             "name": "Entwicklung webbasierter Anwendungen",
             "number": "30.7400",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -621,7 +710,9 @@
             "name": "Graphische Datenverarbeitung",
             "number": "30.7402",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -636,7 +727,9 @@
             "name": "Verteilte Systeme",
             "number": "30.7404",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -649,7 +742,9 @@
             "name": "Datenbanken 2",
             "number": "30.7406",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -665,7 +760,9 @@
             "name": "Theoretische Informatik",
             "number": "30.7410",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -681,7 +778,9 @@
             "name": "Projektmanagement",
             "number": "30.7506",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -693,7 +792,9 @@
             "name": "Elektrotechnik",
             "number": "83.7126",
             "objectName": "",
-            "origin": "EIT"
+            "origin": "EIT",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -705,7 +806,9 @@
             "name": "IT-Compliance",
             "number": "84.7118",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -717,7 +820,9 @@
             "name": ".Net Framework and C#",
             "number": "30.2508",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -729,7 +834,9 @@
             "name": "Einf\u00fchrung in die Mobilkommunikation",
             "number": "30.2542",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -741,7 +848,9 @@
             "name": "Entscheidungstheorie",
             "number": "30.2612",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -755,7 +864,9 @@
             "name": "Grundlagen des IT-Controlling",
             "number": "30.2342",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -767,7 +878,9 @@
             "name": "High Performance I/O",
             "number": "30.2620",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -779,7 +892,9 @@
             "name": "Internetworking",
             "number": "30.2602",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -793,7 +908,9 @@
             "name": "Java EE Datenbankanwendungsentwicklung",
             "number": "30.2520",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -805,7 +922,9 @@
             "name": "Objektorientierte und objektrelationale Datenbanken",
             "number": "30.2366",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -817,7 +936,9 @@
             "name": "Professionelles Testen",
             "number": "30.2476",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -829,7 +950,9 @@
             "name": "Unix for Software Developers",
             "number": "30.2554",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -841,7 +964,9 @@
             "name": "Advanced Communication Networks",
             "number": "41.4976",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -853,7 +978,9 @@
             "name": "Autonome mobile Systeme",
             "number": "41.5014",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -865,7 +992,9 @@
             "name": "Benutzbare Sicherheit",
             "number": "41.5026",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -877,7 +1006,9 @@
             "name": "Big Data Technologien",
             "number": "41.4614",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -889,7 +1020,9 @@
             "name": "Cloud-native Application Engineering",
             "number": "41.5052",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -901,7 +1034,9 @@
             "name": "Codierungstheorie",
             "number": "41.4934",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -913,7 +1048,9 @@
             "name": "Computer Graphik",
             "number": "41.4834",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -925,7 +1062,9 @@
             "name": "Cryptography",
             "number": "41.4936",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -937,7 +1076,9 @@
             "name": "Embedded HMI & Graphics",
             "number": "41.5032",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -949,7 +1090,9 @@
             "name": "Logik",
             "number": "41.4970",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -961,7 +1104,9 @@
             "name": "Parallel and Distributed Computing",
             "number": "41.4874",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -973,7 +1118,9 @@
             "name": "Text- und Web-Mining",
             "number": "41.5042",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         },
         {
             "active": true,
@@ -985,7 +1132,9 @@
             "name": "Zellulare Netze",
             "number": "41.4906",
             "objectName": "",
-            "origin": ""
+            "origin": "",
+            "examType": "K",
+            "examDuration": 1
         }
     ],
     "name": "Plan A",
