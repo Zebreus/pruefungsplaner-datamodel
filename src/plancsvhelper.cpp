@@ -533,11 +533,14 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
     group->setName(firstLine[i]);
     bool parseIntWorked;
     unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
-    if (!parseIntWorked) {
+    if (parseIntWorked) {
+      group->setExamsPerDay(examsPerDay);
+    } else if (secondLine[i] == "") {
+      // If the field is empty there are unlimited exams per day allowed
+      group->setExamsPerDay(99);
+    } else {
       examsIntervalsFile.close();
       return false;
-    } else {
-      group->setExamsPerDay(examsPerDay);
     }
     constraints.append(group);
   }
@@ -680,11 +683,14 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
     group->setName(firstLine[i]);
     bool parseIntWorked;
     unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
-    if (!parseIntWorked) {
+    if (parseIntWorked) {
+      group->setExamsPerDay(examsPerDay);
+    } else if (secondLine[i] == "") {
+      // If the field is empty there are unlimited exams per day allowed
+      group->setExamsPerDay(99);
+    } else {
       groupsExamsFile.close();
       return false;
-    } else {
-      group->setExamsPerDay(examsPerDay);
     }
     groups.append(group);
   }
