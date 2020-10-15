@@ -22,6 +22,7 @@ class Module : public SerializableDataObject
     Q_PROPERTY(QString number READ getNumber WRITE setNumber NOTIFY numberChanged)
     Q_PROPERTY(bool active READ getActive WRITE setActive NOTIFY activeChanged)
     Q_PROPERTY(QString examType READ getExamType WRITE setExamType NOTIFY examTypeChanged)
+    Q_PROPERTY(unsigned int examDuration READ getExamDuration WRITE setExamDuration NOTIFY examDurationChanged)
 
     Q_PROPERTY(QList<Group*> constraints READ getConstraints WRITE setConstraints NOTIFY constraintsChanged)
     Q_PROPERTY(QList<Group*> groups READ getGroups WRITE setGroups NOTIFY groupsChanged)
@@ -39,6 +40,8 @@ public:
     void setActive(const bool active);
     QString getExamType() const;
     void setExamType(QString examType);
+    unsigned int getExamDuration() const;
+    void setExamDuration(unsigned int examDuration);
     QList<Group*> getConstraints();
     QList<Group*> getGroups() const;
     void setConstraints(QList<Group*> constraints);
@@ -53,6 +56,7 @@ signals:
     void constraintsChanged(QList<Group*> groups);
     void groupsChanged(QList<Group*> groups);
     void examTypeChanged(QString examType);
+    void examDurationChanged(unsigned int examDuration);
 
 public slots:
     void removeGroup(Group* group);
@@ -64,6 +68,7 @@ public:
     QString number;
     bool active;
     QString examType;
+    unsigned int examDuration;
     QList<Group*> constraints;
     QList<Group*> groups;
 

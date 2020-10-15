@@ -77,6 +77,23 @@ void Module::setExamType(QString examType)
     emit examTypeChanged(examType);
 }
 
+unsigned int Module::getExamDuration() const
+{
+    return examDuration;
+}
+
+void Module::setExamDuration(unsigned int examDuration)
+{
+    if (this->examDuration == examDuration)
+        return;
+
+    if (examDuration == 0)
+        return;
+
+    this->examDuration = examDuration;
+    emit examDurationChanged(this->examDuration);
+}
+
 QList<Group*> Module::getConstraints(){
     return constraints;
 }
