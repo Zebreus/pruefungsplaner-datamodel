@@ -35,7 +35,6 @@ TEST(testDataTests, getInvalidJsonPlanWorks) {
 
 TEST(testDataTests, prepareScheduledDirectoryWorks) {
   QTemporaryDir directory;
-  std::cout << directory.path().toUtf8().constData() << std::endl;
   ASSERT_TRUE(prepareScheduledDirectory(directory.path()));
   ASSERT_TRUE(
       QFile(directory.path() + "/pruef-intervalle.csv").open(QFile::ReadOnly));
