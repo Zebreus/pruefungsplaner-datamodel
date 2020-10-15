@@ -285,14 +285,14 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
 
     // Only one constraint is possible, because the legacy algorithm does not
     // support more
-    if (module->constraints.size() >= 1) {
-      fileStream << module->constraints[0]->getName();
+    if (module->getConstraints().size() >= 1) {
+      fileStream << module->getConstraints()[0]->getName();
     }
     fileStream << ";";
 
     // TODO Check somewhere, that groupnames do not contain commas
     QString divider = "";
-    for (Group* group : module->groups) {
+    for (Group* group : module->getGroups()) {
       fileStream << divider << group->getName();
       divider = ",";
     }
@@ -472,14 +472,14 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
 
     // Only one constraint is possible, because the legacy algorithm does not
     // support more
-    if (module->constraints.size() >= 1) {
-      fileStream << module->constraints[0]->getName();
+    if (module->getConstraints().size() >= 1) {
+      fileStream << module->getConstraints()[0]->getName();
     }
     fileStream << ";";
 
     // TODO Check somewhere, that groupnames do not contain commas
     QString divider = "";
-    for (Group* group : module->groups) {
+    for (Group* group : module->getGroups()) {
       fileStream << divider << group->getName();
       divider = ",";
     }
@@ -592,7 +592,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
       bool foundGroup = false;
       for (Group* group : plan->groups) {
         if (group->getName() == groupName) {
-          module->groups.append(group);
+          module->getGroups().append(group);
           foundGroup = true;
           break;
         }
@@ -607,7 +607,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     if (words[0] != "") {
       for (Group* constraint : plan->constraints) {
         if (constraint->getName() == words[0]) {
-          module->constraints.append(constraint);
+          module->getConstraints().append(constraint);
           foundConstraint = true;
           break;
         }

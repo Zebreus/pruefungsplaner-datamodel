@@ -196,14 +196,14 @@ TEST(planCsvHelperTests, readPlanReadsWrittenPlanCorrect) {
     if (module->getOrigin() != "EIT") {
       bool found = false;
       for (Module* readModule : readPlan->modules) {
-        if (module->name == readModule->name) {
+        if (module->getName() == readModule->getName()) {
           found = true;
           break;
         }
       }
       ASSERT_TRUE(found) << "The read plan does not contain all modules from "
                             "the original plan. Missing module: "
-                         << module->name.constData();
+                         << module->getName().constData();
     }
   }
 }
