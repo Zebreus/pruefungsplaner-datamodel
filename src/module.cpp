@@ -60,6 +60,23 @@ void Module::setActive(const bool active)
     emit activeChanged();
 }
 
+QString Module::getExamType() const
+{
+    return examType;
+}
+
+void Module::setExamType(QString examType)
+{
+    if (this->examType == examType)
+        return;
+
+    if (examType != "P" && examType != "K")
+        return;
+
+    this->examType = examType;
+    emit examTypeChanged(examType);
+}
+
 QList<Group*> Module::getConstraints(){
     return constraints;
 }
