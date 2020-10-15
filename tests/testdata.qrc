@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>data/unschedulableplan.json</file>
+        <file>data/plan.json</file>
+        <file>data/scheduled/zuege-pruef.csv</file>
+        <file>data/scheduled/zuege-pruef-pref2.csv</file>
+        <file>data/scheduled/pruefungen.csv</file>
+        <file>data/scheduled/pruef-intervalle.csv</file>
+        <file>data/scheduled/SPA-ERGEBNIS-PP/SPA-zuege-pruef.csv</file>
+        <file>data/scheduled/SPA-ERGEBNIS-PP/SPA-planung-pruef.csv</file>
+    </qresource>
+</RCC>

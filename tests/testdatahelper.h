@@ -7,8 +7,10 @@
 
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
+#include <QDir>
 #include <QFile>
 #include <QJsonDocument>
+#include <QQueue>
 #include <QSharedPointer>
 #include <QString>
 #include "plan.h"
@@ -21,7 +23,7 @@
  * getValidPlanWorks test will fail
  */
 inline QSharedPointer<Plan> getValidPlan() {
-  QFile file("./tests/data/plan.json");
+  QFile file(":/data/plan.json");
   EXPECT_TRUE(file.exists())
       << "Example plan json file (" << file.fileName().constData()
       << ") does not exist.";
@@ -46,7 +48,7 @@ inline QSharedPointer<Plan> getValidPlan() {
  */
 inline QSharedPointer<Plan> getInvalidPlan() {
   // TODO create invalid plan json
-  QFile file("./tests/data/unschedulableplan.json");
+  QFile file(":/data/unschedulableplan.json");
   EXPECT_TRUE(file.exists())
       << "Unschedulable plan json file (" << file.fileName().constData()
       << ") does not exist.";
@@ -70,7 +72,7 @@ inline QSharedPointer<Plan> getInvalidPlan() {
  * getValidJsonPlanWorks test will fail
  */
 inline QJsonObject getValidJsonPlan() {
-  QFile file("./tests/data/plan.json");
+  QFile file(":/data/plan.json");
   EXPECT_TRUE(file.exists())
       << "Example plan json file (" << file.fileName().constData()
       << ") does not exist.";
@@ -93,7 +95,7 @@ inline QJsonObject getValidJsonPlan() {
  */
 inline QJsonObject getInvalidJsonPlan() {
   // TODO create invalid plan json
-  QFile file("./tests/data/unschedulableplan.json");
+  QFile file(":/data/unschedulableplan.json");
   EXPECT_TRUE(file.exists())
       << "Unschedulable plan json file (" << file.fileName().constData()
       << ") does not exist.";
@@ -115,15 +117,41 @@ inline QJsonObject getInvalidJsonPlan() {
  * If there are problems loading the files the prepareScheduledDirectoryWorks
  * test will fail
  */
-inline bool prepareScheduledDirectory(QString path) {
-  // TODO replace system call with proper code
-  int result = system(
-      QString("cp -rT ./tests/data/scheduled/ " + path).toUtf8().constData());
-  if (result == 0) {
-    return true;
-  } else {
-    return false;
+inline bool prepareScheduledDirectory(QString destination) {
+  QString source = ":/data/scheduled/";
+  QQueue<QString> paths;
+  paths.enqueue(".");
+
+  while (!paths.isEmpty()) {
+    QString path = paths.dequeue();
+    QDir dir(source + QDir::separator() + path);
+    if (!QDir(source + QDir::separator() + path).exists()) {
+      return false;
+    }
+    if (!QDir(destination + QDir::separator() + path).exists()) {
+      return false;
+    }
+
+    foreach (QString directory,
+             dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+      QDir destdir(destination + QDir::separator() + path + QDir::separator() +
+                   directory);
+      if (!destdir.mkpath(".")) {
+        return false;
+      }
+      paths.enqueue(path + QDir::separator() + directory);
+    }
+
+    foreach (QString f, dir.entryList(QDir::Files)) {
+      if (!QFile::copy(
+              source + QDir::separator() + path + QDir::separator() + f,
+              destination + QDir::separator() + path + QDir::separator() + f)) {
+        return false;
+      }
+    }
   }
+
+  return true;
 }
 
 #endif

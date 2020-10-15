@@ -35,19 +35,20 @@ TEST(testDataTests, getInvalidJsonPlanWorks) {
 
 TEST(testDataTests, prepareScheduledDirectoryWorks) {
   QTemporaryDir directory;
+  std::cout << directory.path().toUtf8().constData() << std::endl;
   ASSERT_TRUE(prepareScheduledDirectory(directory.path()));
   ASSERT_TRUE(
-      QFile(directory.path() + "/pruef-intervalle.csv").open(QFile::ReadWrite));
+      QFile(directory.path() + "/pruef-intervalle.csv").open(QFile::ReadOnly));
   ASSERT_TRUE(
-      QFile(directory.path() + "/pruefungen.csv").open(QFile::ReadWrite));
+      QFile(directory.path() + "/pruefungen.csv").open(QFile::ReadOnly));
   ASSERT_TRUE(
-      QFile(directory.path() + "/zuege-pruef.csv").open(QFile::ReadWrite));
-  ASSERT_TRUE(QFile(directory.path() + "/zuege-pruef-pref2.csv")
-                  .open(QFile::ReadWrite));
+      QFile(directory.path() + "/zuege-pruef.csv").open(QFile::ReadOnly));
+  ASSERT_TRUE(
+      QFile(directory.path() + "/zuege-pruef-pref2.csv").open(QFile::ReadOnly));
   ASSERT_TRUE(QFile(directory.path() + "/SPA-ERGEBNIS-PP/SPA-planung-pruef.csv")
-                  .open(QFile::ReadWrite));
+                  .open(QFile::ReadOnly));
   ASSERT_TRUE(QFile(directory.path() + "/SPA-ERGEBNIS-PP/SPA-zuege-pruef.csv")
-                  .open(QFile::ReadWrite));
+                  .open(QFile::ReadOnly));
 }
 
 #endif

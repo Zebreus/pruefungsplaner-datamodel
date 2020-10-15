@@ -65,3 +65,6 @@ else{
     }
     !isEmpty(target.path): INSTALLS += target
 }
+
+RESOURCES += \
+    tests/testdata.qrc
