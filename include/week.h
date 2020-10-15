@@ -7,31 +7,31 @@ class Week;
 #include <QString>
 #include "day.h"
 
-class Week : public SerializableDataObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QList<Day*> days READ getDays WRITE setDays NOTIFY daysChanged)
-public:
-    using SerializableDataObject::SerializableDataObject;
-    explicit Week(QObject *parent = nullptr);
-    QString name();
-    void setName(const QString &name);
-    QList<Day*> getDays() const;
-    void setDays(QList<Day*> days);
+class Week : public SerializableDataObject {
+  using SerializableDataObject::SerializableDataObject;
+  Q_OBJECT
+  Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+  Q_PROPERTY(QList<Day*> days READ getDays WRITE setDays NOTIFY daysChanged)
 
-signals:
-    void nameChanged();
-    void daysChanged(QList<Day*> days);
+ public:
+  explicit Week(QObject* parent = nullptr);
 
-private:
-    QString weekName;
-    QList<Day*> days;
+  // SerializableDataObject interface
+  void fromJsonObject(const QJsonObject& content);
+  QJsonObject toJsonObject() const;
 
-    // SerializableDataObject interface
-public:
-    void fromJsonObject(const QJsonObject &content);
-    QJsonObject toJsonObject() const;
+  QString getName() const;
+  void setName(const QString& name);
+  QList<Day*> getDays() const;
+  void setDays(QList<Day*> days);
+
+ signals:
+  void nameChanged(const QString name);
+  void daysChanged(const QList<Day*> days);
+
+ private:
+  QString name;
+  QList<Day*> days;
 };
 
-#endif // WEEK_H
+#endif  // WEEK_H

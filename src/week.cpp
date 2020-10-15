@@ -1,51 +1,42 @@
 #include <week.h>
 
-Week::Week(QObject *parent) : SerializableDataObject(parent)
-{
+Week::Week(QObject* parent) : SerializableDataObject(parent) {}
 
+QString Week::getName() const {
+  return name;
 }
 
-QString Week::name()
-{
-    return weekName;
+void Week::setName(const QString& name) {
+  if (this->name == name)
+    return;
+
+  this->name = name;
+  emit nameChanged(this->name);
 }
 
-void Week::setName(const QString &name)
-{
-    if (name == weekName)
-        return;
-
-    weekName = name;
-    emit nameChanged();
+QList<Day*> Week::getDays() const {
+  return this->days;
 }
 
-QList<Day*> Week::getDays() const
-{
-    return this->days;
+void Week::setDays(QList<Day*> days) {
+  if (this->days == days)
+    return;
+
+  this->days = days;
+  emit daysChanged(this->days);
 }
 
-void Week::setDays(QList<Day*> days)
-{
-    if (this->days == days)
-        return;
+void Week::fromJsonObject(const QJsonObject& content) {
+  simpleValuesFromJsonObject(content);
 
-    this->days = days;
-    emit daysChanged(this->days);
+  QJsonArray daysJsonArray = content.value("days").toArray();
+  days = fromObjectJsonArray<Day>(daysJsonArray);
+  QVariant var;
+  var.setValue(days);
+  createListFromValueAndContentType(daysJsonArray,
+                                    (QMetaType::Type)var.userType());
 }
 
-
-void Week::fromJsonObject(const QJsonObject &content)
-{
-    simpleValuesFromJsonObject(content);
-
-    QJsonArray daysJsonArray = content.value("days").toArray();
-    days = fromObjectJsonArray<Day>(daysJsonArray);
-    QVariant var;
-    var.setValue(days);
-    createListFromValueAndContentType(daysJsonArray, (QMetaType::Type)var.userType());
-}
-
-QJsonObject Week::toJsonObject() const
-{
-    return recursiveToJsonObject();
+QJsonObject Week::toJsonObject() const {
+  return recursiveToJsonObject();
 }
