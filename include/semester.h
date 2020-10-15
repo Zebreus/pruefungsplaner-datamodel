@@ -7,34 +7,32 @@ class Semester;
 #include <QString>
 #include "plan.h"
 
-class Semester : public SerializableDataObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QList<Plan*> plans READ getPlans WRITE setPlans NOTIFY plansChanged)
-public:
-    using SerializableDataObject::SerializableDataObject;
-    Q_INVOKABLE explicit Semester(QObject *parent = nullptr);
-    QString name();
-    void setName(const QString &name);
+class Semester : public SerializableDataObject {
+  using SerializableDataObject::SerializableDataObject;
+  Q_OBJECT
+  Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+  Q_PROPERTY(
+      QList<Plan*> plans READ getPlans WRITE setPlans NOTIFY plansChanged)
 
-    QList<Plan*> getPlans() const;
-    void setPlans(QList<Plan*> plans);
+ public:
+  explicit Semester(QObject* parent = nullptr);
 
-signals:
-    void nameChanged();
+  // SerializableDataObject interface
+  void fromJsonObject(const QJsonObject& content);
+  QJsonObject toJsonObject() const;
 
-    void plansChanged(QList<Plan*> plans);
+  QString getName() const;
+  void setName(const QString& name);
+  QList<Plan*> getPlans() const;
+  void setPlans(QList<Plan*> plans);
 
-private:
-    QString semesterName;
+ signals:
+  void nameChanged(const QString name);
+  void plansChanged(const QList<Plan*> plans);
 
-    QList<Plan*> plans;
-
-    // SerializableDataObject interface
-public:
-    void fromJsonObject(const QJsonObject &content);
-    QJsonObject toJsonObject() const;
+ private:
+  QString name;
+  QList<Plan*> plans;
 };
 
-#endif // SEMESTER_H
+#endif  // SEMESTER_H
