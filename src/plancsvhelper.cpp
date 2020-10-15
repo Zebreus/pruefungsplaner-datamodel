@@ -15,13 +15,15 @@ QSharedPointer<Plan> PlanCsvHelper::readPlan() {
   newPlan->setName("new plan");
 
   // Add base
-  newPlan->weeks.append(new Week(newPlan.get()));
-  newPlan->weeks.append(new Week(newPlan.get()));
-  newPlan->weeks.append(new Week(newPlan.get()));
-  newPlan->weeks[0]->setName("Woche 1");
-  newPlan->weeks[1]->setName("Woche 2");
-  newPlan->weeks[2]->setName("Woche 3");
-  for (Week* week : newPlan->weeks) {
+  QList<Week*> weeks;
+  weeks.append(new Week(newPlan.get()));
+  weeks.append(new Week(newPlan.get()));
+  weeks.append(new Week(newPlan.get()));
+  weeks[0]->setName("Woche 1");
+  weeks[1]->setName("Woche 2");
+  weeks[2]->setName("Woche 3");
+  newPlan->setWeeks(weeks);
+  for (Week* week : weeks) {
     QList<Day*> days;
     for (int x = 0; x < 6; x++) {
       days.append(new Day(week));
@@ -122,7 +124,7 @@ bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
 
     // Find matching module
     Module* matchingModule = nullptr;
-    for (Module* module : plan->modules) {
+    for (Module* module : plan->getModules()) {
       if (module->getNumber() == moduleNumber) {
         if (module->getName() == words[2]) {
           if (module->getExamType() == words[4]) {
@@ -152,11 +154,11 @@ bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
       return false;
     }
 
-    if (day < 0 || day / 7 >= plan->weeks.size()) {
+    if (day < 0 || day / 7 >= plan->getWeeks().size()) {
       planningExamsResultFile.close();
       return false;
     }
-    Week* weekPointer = plan->weeks[day / 7];
+    Week* weekPointer = plan->getWeeks()[day / 7];
 
     if (day % 7 >= weekPointer->getDays().size()) {
       planningExamsResultFile.close();
@@ -176,7 +178,7 @@ bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
 
   // Finally add modules to timeslots
   for (auto moduleTimeslotPair : modulesToAdd) {
-    for (Week* week : plan->weeks) {
+    for (Week* week : plan->getWeeks()) {
       for (Day* day : week->getDays()) {
         for (Timeslot* timeslot : day->getTimeslots()) {
           timeslot->removeModule(moduleTimeslotPair.first);
@@ -208,13 +210,13 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
   QTextStream fileStream(&examsIntervalsFile);
 
   fileStream << "Block;";
-  for (auto constraint : plan->constraints) {
+  for (auto constraint : plan->getConstraints()) {
     fileStream << constraint->getName() << ";";
   }
   fileStream << "-ENDE-\n";
 
   fileStream << QString("Maximale Prü/Tag;");
-  for (Group* constraint : plan->constraints) {
+  for (Group* constraint : plan->getConstraints()) {
     fileStream << constraint->getExamsPerDay() << ";";
   }
   fileStream << "\n";
@@ -224,8 +226,8 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
     for (int day = 0; day < 6; day++) {
       for (int timeslot = 0; timeslot < 6; timeslot++) {
         fileStream << blockNames[week * 6 * 6 + day * 6 + timeslot] << ";";
-        for (Group* constraint : plan->constraints) {
-          if (plan->weeks[week]
+        for (Group* constraint : plan->getConstraints()) {
+          if (plan->getWeeks()[week]
                   ->getDays()[day]
                   ->getTimeslots()[timeslot]
                   ->containsActiveGroup(constraint)) {
@@ -259,7 +261,7 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
   */
 
   fileStream << "-ENDE-;";
-  for (int i = 0; i < plan->constraints.size(); i++) {
+  for (int i = 0; i < plan->getConstraints().size(); i++) {
     fileStream << ";";
   }
 
@@ -275,7 +277,7 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
   }
   QTextStream fileStream(&examsFile);
 
-  for (Module* module : plan->modules) {
+  for (Module* module : plan->getModules()) {
     // TODO Check somewhere else
     if (module->getOrigin() == "EIT") {
       // SPA-algorithmus fails if there are EIT exams, because "Prüfungen von
@@ -329,13 +331,13 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
   QTextStream fileStream(&groupsExamsFile);
 
   fileStream << "Block;";
-  for (Group* group : plan->groups) {
+  for (Group* group : plan->getGroups()) {
     fileStream << group->getName() << ";";
   }
   fileStream << "-ENDE-\n";
 
   fileStream << QString("Maximale Prü/Tag;");
-  for (Group* group : plan->groups) {
+  for (Group* group : plan->getGroups()) {
     fileStream << group->getExamsPerDay() << ";";
   }
   fileStream << "\n";
@@ -345,8 +347,8 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
     for (int day = 0; day < 6; day++) {
       for (int timeslot = 0; timeslot < 6; timeslot++) {
         fileStream << blockNames[week * 6 * 6 + day * 6 + timeslot] << ";";
-        for (Group* group : plan->groups) {
-          if (plan->weeks[week]
+        for (Group* group : plan->getGroups()) {
+          if (plan->getWeeks()[week]
                   ->getDays()[day]
                   ->getTimeslots()[timeslot]
                   ->containsActiveGroup(group)) {
@@ -380,7 +382,7 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
   */
 
   fileStream << "-ENDE-;";
-  for (int i = 0; i < plan->groups.size(); i++) {
+  for (int i = 0; i < plan->getGroups().size(); i++) {
     fileStream << ";";
   }
 
@@ -462,7 +464,7 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
     return true;
   }
 
-  for (Module* module : plan->modules) {
+  for (Module* module : plan->getModules()) {
     // TODO Check somewhere else
     if (module->getOrigin() == "EIT") {
       // SPA-algorithmus fails if there are EIT exams, because "Prüfungen von
@@ -509,8 +511,6 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
 
   QTextStream fileStream(&examsIntervalsFile);
 
-  QList<Group*> groups;
-
   // Read and check first two lines
   int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
@@ -527,6 +527,7 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
     return false;
   }
 
+  QList<Group*> constraints = plan->getConstraints();
   for (int i = 1; i < firstLine.size() - 1; i++) {
     Group* group = new Group(plan.get());
     group->setName(firstLine[i]);
@@ -538,12 +539,11 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
     } else {
       group->setExamsPerDay(examsPerDay);
     }
-    plan->constraints.append(group);
-    groups.append(group);
+    constraints.append(group);
   }
 
   // Read a line for each timeslot
-  for (Week* week : plan->weeks) {
+  for (Week* week : plan->getWeeks()) {
     for (Day* day : week->getDays()) {
       for (Timeslot* timeslot : day->getTimeslots()) {
         QList<QString> words = fileStream.readLine().split(";");
@@ -551,9 +551,9 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
           examsIntervalsFile.close();
           return false;
         }
-        for (int i = 0; i < groups.size(); i++) {
+        for (int i = 0; i < constraints.size(); i++) {
           if (words[i + 1] == "FREI") {
-            timeslot->addActiveGroup(groups[i]);
+            timeslot->addActiveGroup(constraints[i]);
           } else if (words[i + 1] != "BLOCKIERT") {
             examsIntervalsFile.close();
             return false;
@@ -562,6 +562,8 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
       }
     }
   }
+
+  plan->setConstraints(constraints);
 
   examsIntervalsFile.close();
   return true;
@@ -575,6 +577,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
   QTextStream fileStream(&examsFile);
 
   QList<QString> words = fileStream.readLine().split(";");
+  QList<Module*> modules = plan->getModules();
   while (!words.isEmpty() && words.first() != "-ENDE-") {
     if (words.first().startsWith("//")) {
       words = fileStream.readLine().split(";");
@@ -590,7 +593,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
     module->setNumber(words[3]);
     for (QString groupName : words[1].split(",")) {
       bool foundGroup = false;
-      for (Group* group : plan->groups) {
+      for (Group* group : plan->getGroups()) {
         if (group->getName() == groupName) {
           module->getGroups().append(group);
           foundGroup = true;
@@ -605,7 +608,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
 
     bool foundConstraint = false;
     if (words[0] != "") {
-      for (Group* constraint : plan->constraints) {
+      for (Group* constraint : plan->getConstraints()) {
         if (constraint->getName() == words[0]) {
           module->getConstraints().append(constraint);
           foundConstraint = true;
@@ -639,10 +642,12 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
       module->setExamDuration(1);
     }
 
-    plan->modules.append(module);
+    modules.append(module);
 
     words = fileStream.readLine().split(";");
   }
+
+  plan->setModules(modules);
 
   return true;
 }
@@ -653,8 +658,6 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
   }
 
   QTextStream fileStream(&groupsExamsFile);
-
-  QList<Group*> groups;
 
   // Read and check first two lines
   QList<QString> firstLine = fileStream.readLine().split(";");
@@ -671,6 +674,7 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
     return false;
   }
 
+  QList<Group*> groups = plan->getGroups();
   for (int i = 1; i < firstLine.size() - 1; i++) {
     Group* group = new Group(plan.get());
     group->setName(firstLine[i]);
@@ -682,12 +686,11 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
     } else {
       group->setExamsPerDay(examsPerDay);
     }
-    plan->groups.append(group);
     groups.append(group);
   }
 
   // Read a line for each timeslot
-  for (Week* week : plan->weeks) {
+  for (Week* week : plan->getWeeks()) {
     for (Day* day : week->getDays()) {
       for (Timeslot* timeslot : day->getTimeslots()) {
         QList<QString> words = fileStream.readLine().split(";");
@@ -706,6 +709,8 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
       }
     }
   }
+
+  plan->setGroups(groups);
 
   groupsExamsFile.close();
   return true;

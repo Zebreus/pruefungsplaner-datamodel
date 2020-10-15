@@ -191,11 +191,11 @@ TEST(planCsvHelperTests, readPlanReadsWrittenPlanCorrect) {
   ASSERT_NE(readPlan, nullptr);
 
   // Check that no module got lost
-  for (Module* module : plan->modules) {
+  for (Module* module : plan->getModules()) {
     // EIT modules will not be written, so they will get lost
     if (module->getOrigin() != "EIT") {
       bool found = false;
-      for (Module* readModule : readPlan->modules) {
+      for (Module* readModule : readPlan->getModules()) {
         if (module->getName() == readModule->getName()) {
           found = true;
           break;
@@ -250,22 +250,24 @@ TEST(planCsvHelperTests, readScheduleWorksAndAlsoReadsCorrectSchedule) {
   ASSERT_TRUE(helper.readSchedule(plan));
 
   // Assert that the tested modules can be accessed
-  ASSERT_GE(plan->weeks.size(), 2);
-  ASSERT_GE(plan->weeks[1]->getDays().size(), 3);
-  ASSERT_GE(plan->weeks[1]->getDays()[2]->getTimeslots().size(), 5);
-  ASSERT_GE(plan->weeks[1]->getDays()[1]->getTimeslots().size(), 5);
+  ASSERT_GE(plan->getWeeks().size(), 2);
+  ASSERT_GE(plan->getWeeks()[1]->getDays().size(), 3);
+  ASSERT_GE(plan->getWeeks()[1]->getDays()[2]->getTimeslots().size(), 5);
+  ASSERT_GE(plan->getWeeks()[1]->getDays()[1]->getTimeslots().size(), 5);
   ASSERT_GE(
-      plan->weeks[1]->getDays()[2]->getTimeslots()[4]->getModules().size(), 1);
+      plan->getWeeks()[1]->getDays()[2]->getTimeslots()[4]->getModules().size(),
+      1);
   ASSERT_GE(
-      plan->weeks[1]->getDays()[1]->getTimeslots()[2]->getModules().size(), 1);
+      plan->getWeeks()[1]->getDays()[1]->getTimeslots()[2]->getModules().size(),
+      1);
   // Check two of the modules from the file
-  ASSERT_EQ(plan->weeks[1]
+  ASSERT_EQ(plan->getWeeks()[1]
                 ->getDays()[2]
                 ->getTimeslots()[4]
                 ->getModules()[0]
                 ->getNumber(),
             "30.2342");
-  ASSERT_EQ(plan->weeks[1]
+  ASSERT_EQ(plan->getWeeks()[1]
                 ->getDays()[1]
                 ->getTimeslots()[2]
                 ->getModules()[0]
@@ -281,29 +283,38 @@ TEST(planCsvHelperTests, readScheduleRemovesOldScheduledModules) {
   QSharedPointer<Plan> plan = helper.readPlan();
   ASSERT_NE(plan, QSharedPointer<Plan>(nullptr));
   // Preschedule a module twice, so at least one of them gets removed
-  ASSERT_GE(plan->weeks.size(), 1);
-  ASSERT_GE(plan->weeks[0]->getDays().size(), 1);
-  ASSERT_GE(plan->weeks[0]->getDays()[0]->getTimeslots().size(), 2);
-  ASSERT_GE(plan->modules.size(), 1);
-  plan->weeks[0]->getDays()[0]->getTimeslots()[0]->addModule(plan->modules[0]);
-  plan->weeks[0]->getDays()[0]->getTimeslots()[1]->addModule(plan->modules[0]);
+  ASSERT_GE(plan->getWeeks().size(), 1);
+  ASSERT_GE(plan->getWeeks()[0]->getDays().size(), 1);
+  ASSERT_GE(plan->getWeeks()[0]->getDays()[0]->getTimeslots().size(), 2);
+  ASSERT_GE(plan->getModules().size(), 1);
+  plan->getWeeks()[0]->getDays()[0]->getTimeslots()[0]->addModule(
+      plan->getModules()[0]);
+  plan->getWeeks()[0]->getDays()[0]->getTimeslots()[1]->addModule(
+      plan->getModules()[0]);
   ASSERT_TRUE(helper.readSchedule(plan));
 
-  EXPECT_FALSE(
-      plan->weeks[0]->getDays()[0]->getTimeslots()[0]->getModules().contains(
-          plan->modules[0]) &&
-      plan->weeks[0]->getDays()[0]->getTimeslots()[1]->getModules().contains(
-          plan->modules[0]));
+  EXPECT_FALSE(plan->getWeeks()[0]
+                   ->getDays()[0]
+                   ->getTimeslots()[0]
+                   ->getModules()
+                   .contains(plan->getModules()[0]) &&
+               plan->getWeeks()[0]
+                   ->getDays()[0]
+                   ->getTimeslots()[1]
+                   ->getModules()
+                   .contains(plan->getModules()[0]));
 }
 
 TEST(planCsvHelperTests, writePlanWritesProbablyCorrectScheduleFile) {
   QSharedPointer<Plan> plan = getValidPlan();
-  ASSERT_GE(plan->weeks.size(), 1);
-  ASSERT_GE(plan->weeks[0]->getDays().size(), 1);
-  ASSERT_GE(plan->weeks[0]->getDays()[0]->getTimeslots().size(), 2);
-  ASSERT_GE(plan->modules.size(), 3);
-  plan->weeks[0]->getDays()[0]->getTimeslots()[0]->addModule(plan->modules[0]);
-  plan->weeks[0]->getDays()[0]->getTimeslots()[1]->addModule(plan->modules[1]);
+  ASSERT_GE(plan->getWeeks().size(), 1);
+  ASSERT_GE(plan->getWeeks()[0]->getDays().size(), 1);
+  ASSERT_GE(plan->getWeeks()[0]->getDays()[0]->getTimeslots().size(), 2);
+  ASSERT_GE(plan->getModules().size(), 3);
+  plan->getWeeks()[0]->getDays()[0]->getTimeslots()[0]->addModule(
+      plan->getModules()[0]);
+  plan->getWeeks()[0]->getDays()[0]->getTimeslots()[1]->addModule(
+      plan->getModules()[1]);
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
