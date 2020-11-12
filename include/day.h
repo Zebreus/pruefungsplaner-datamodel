@@ -11,7 +11,7 @@ class Day;
 class Day : public SerializableDataObject {
   using SerializableDataObject::SerializableDataObject;
   Q_OBJECT
-  Q_PROPERTY(QString getName READ getName WRITE setName NOTIFY nameChanged)
+  Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
   Q_PROPERTY(QList<Timeslot*> timeslots READ getTimeslots WRITE setTimeslots
                  NOTIFY timeslotsChanged)
  public:
