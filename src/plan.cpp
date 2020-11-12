@@ -87,7 +87,7 @@ void Plan::addNewConstraint(const QString& name) {
   Group* gp = new Group(this);
   gp->setName(name);
   constraints.append(gp);
-  emit constraintsChanged(this->groups);
+  emit constraintsChanged(this->constraints);
 }
 
 void Plan::removeConstraint(Group* gp) {
@@ -100,7 +100,7 @@ void Plan::removeConstraint(Group* gp) {
       }
     }
   }
-  emit constraintsChanged(this->groups);
+  emit constraintsChanged(this->constraints);
 }
 
 void Plan::fromJsonObject(const QJsonObject& content) {
