@@ -1,6 +1,10 @@
 #include <group.h>
 
-Group::Group(QObject* parent) : SerializableDataObject(parent) {}
+Group::Group(QObject* parent)
+    : SerializableDataObject(parent),
+      active(true),
+      small(false),
+      obsolete(false) {}
 
 QString Group::getName() const {
   return name;
@@ -36,6 +40,42 @@ void Group::setExamsPerDay(unsigned int examsPerDay) {
 
   this->examsPerDay = examsPerDay;
   emit examsPerDayChanged(examsPerDay);
+}
+
+bool Group::getActive() const {
+  return active;
+}
+
+void Group::setActive(bool active) {
+  if (this->active == active)
+    return;
+
+  this->active = active;
+  emit activeChanged(active);
+}
+
+bool Group::getSmall() const {
+  return small;
+}
+
+void Group::setSmall(bool small) {
+  if (this->small == small)
+    return;
+
+  this->small = small;
+  emit smallChanged(small);
+}
+
+bool Group::getObsolete() const {
+  return obsolete;
+}
+
+void Group::setObsolete(bool obsolete) {
+  if (this->obsolete == obsolete)
+    return;
+
+  this->obsolete = obsolete;
+  emit obsoleteChanged(obsolete);
 }
 
 void Group::fromJsonObject(const QJsonObject& content) {
