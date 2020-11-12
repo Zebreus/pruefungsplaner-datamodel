@@ -401,4 +401,78 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesExamsPerDay) {
   ASSERT_EQ(readPlan->getGroups()[2]->getExamsPerDay(), 8);
 }
 
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesActiveGroup) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  /*  ASSERT_GE(plan->getConstraints().size(), 3);
+    bool constraintZeroActive =
+        plan->getConstraints()[0]->getActive();
+    constraintZeroActive = !constraintZeroActive;
+    plan->getConstraints()[0]->setActive(constraintZeroActive);
+    plan->getConstraints()[1]->setActive(true);
+    plan->getConstraints()[2]->setActive(false);*/
+
+  ASSERT_GE(plan->getGroups().size(), 3);
+  unsigned int groupZeroActive = plan->getGroups()[0]->getActive();
+  groupZeroActive = !groupZeroActive;
+  plan->getGroups()[0]->setActive(groupZeroActive);
+  plan->getGroups()[1]->setActive(true);
+  plan->getGroups()[2]->setActive(false);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the order will be the same
+  /*ASSERT_EQ(readPlan->getConstraints()[0]->getActive(),
+            constraintZeroActive);
+  ASSERT_EQ(readPlan->getConstraints()[1]->getActive(), true);
+  ASSERT_EQ(readPlan->getConstraints()[2]->getActive(), false);*/
+  ASSERT_EQ(readPlan->getGroups()[0]->getActive(), groupZeroActive);
+  ASSERT_EQ(readPlan->getGroups()[1]->getActive(), true);
+  ASSERT_EQ(readPlan->getGroups()[2]->getActive(), false);
+}
+
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesObsoleteGroup) {
+  QSharedPointer<Plan> plan = getValidPlan();
+
+  ASSERT_GE(plan->getGroups().size(), 3);
+  unsigned int groupZeroObsolete = plan->getGroups()[0]->getObsolete();
+  groupZeroObsolete = !groupZeroObsolete;
+  plan->getGroups()[0]->setObsolete(groupZeroObsolete);
+  plan->getGroups()[1]->setObsolete(true);
+  plan->getGroups()[2]->setObsolete(false);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the order will be the same
+  ASSERT_EQ(readPlan->getGroups()[0]->getObsolete(), groupZeroObsolete);
+  ASSERT_EQ(readPlan->getGroups()[1]->getObsolete(), true);
+  ASSERT_EQ(readPlan->getGroups()[2]->getObsolete(), false);
+}
+
+TEST(planCsvHelperTests, writingAndReadingPlanPreservesSmallGroup) {
+  QSharedPointer<Plan> plan = getValidPlan();
+
+  ASSERT_GE(plan->getGroups().size(), 3);
+  unsigned int groupZeroSmall = plan->getGroups()[0]->getSmall();
+  groupZeroSmall = !groupZeroSmall;
+  plan->getGroups()[0]->setSmall(groupZeroSmall);
+  plan->getGroups()[1]->setSmall(true);
+  plan->getGroups()[2]->setSmall(false);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan);
+  QSharedPointer<Plan> readPlan = helper.readPlan();
+  ASSERT_NE(readPlan, nullptr);
+  // TODO maybe do not trust that the order will be the same
+  ASSERT_EQ(readPlan->getGroups()[0]->getSmall(), groupZeroSmall);
+  ASSERT_EQ(readPlan->getGroups()[1]->getSmall(), true);
+  ASSERT_EQ(readPlan->getGroups()[2]->getSmall(), false);
+}
+
 #endif  // TEST_CPP
