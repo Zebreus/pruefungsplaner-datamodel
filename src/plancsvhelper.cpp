@@ -62,6 +62,10 @@ QSharedPointer<Plan> PlanCsvHelper::readPlan() {
     return nullptr;
   }
 
+  if (!readGroupsExamsPrefFile(newPlan)) {
+    return nullptr;
+  }
+
   return newPlan;
 }
 
@@ -390,14 +394,33 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::writeGroupsExamsPrefFile(QSharedPointer<Plan>) {
+bool PlanCsvHelper::writeGroupsExamsPrefFile(QSharedPointer<Plan> plan) {
   if (!groupsExamsPrefFile.open(QFile::ReadWrite)) {
     return false;
   }
+
   QTextStream fileStream(&groupsExamsPrefFile);
 
-  fileStream << "I Bach 1A;;;;;\n";
-  fileStream << "-ENDE-;;;;;";
+  for (Group* group : plan->getGroups()) {
+    if (!group->getActive()) {
+      fileStream << group->getName() << "\n";
+    }
+  }
+  fileStream << "-ENDE-\n";
+
+  for (Group* group : plan->getGroups()) {
+    if (group->getSmall()) {
+      fileStream << group->getName() << "\n";
+    }
+  }
+  fileStream << "-ENDE-\n";
+
+  for (Group* group : plan->getGroups()) {
+    if (group->getObsolete()) {
+      fileStream << group->getName() << "\n";
+    }
+  }
+  fileStream << "-ENDE-\n";
 
   groupsExamsPrefFile.close();
   return true;
@@ -726,7 +749,80 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::readGroupsExamsPrefFile(QSharedPointer<Plan>) {
+bool PlanCsvHelper::readGroupsExamsPrefFile(QSharedPointer<Plan> plan) {
+  if (!groupsExamsPrefFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    return false;
+  }
+
+  QTextStream fileStream(&groupsExamsPrefFile);
+
+  for (Group* group : plan->getGroups()) {
+    group->setActive(true);
+    group->setSmall(false);
+    group->setObsolete(false);
+  }
+
+  QList<QString> line = fileStream.readLine().split(";");
+  while (line.size() >= 1 && line[0] != "-ENDE-") {
+    if (line[0].startsWith("//")) {
+      continue;
+    }
+    bool found = false;
+    for (Group* group : plan->getGroups()) {
+      if (group->getName() == line[0]) {
+        group->setActive(false);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      groupsExamsPrefFile.close();
+      return false;
+    }
+    line = fileStream.readLine().split(";");
+  }
+
+  line = fileStream.readLine().split(";");
+  while (line.size() >= 1 && line[0] != "-ENDE-") {
+    if (line[0].startsWith("//")) {
+      continue;
+    }
+    bool found = false;
+    for (Group* group : plan->getGroups()) {
+      if (group->getName() == line[0]) {
+        group->setSmall(true);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      groupsExamsPrefFile.close();
+      return false;
+    }
+    line = fileStream.readLine().split(";");
+  }
+
+  line = fileStream.readLine().split(";");
+  while (line.size() >= 1 && line[0] != "-ENDE-") {
+    if (line[0].startsWith("//")) {
+      continue;
+    }
+    bool found = false;
+    for (Group* group : plan->getGroups()) {
+      if (group->getName() == line[0]) {
+        group->setObsolete(true);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      groupsExamsPrefFile.close();
+      return false;
+    }
+    line = fileStream.readLine().split(";");
+  }
+
   // The contents of the groupsExamsPrefFile are not relevant for plan
+  groupsExamsPrefFile.close();
   return true;
 }
