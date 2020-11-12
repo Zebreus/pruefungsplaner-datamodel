@@ -70,252 +70,360 @@
             "name": "WP_Bach",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 141,
             "name": "WP_Mast",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 142,
             "name": "I Bach 1B",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 143,
             "name": "I Bach 1C",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 144,
             "name": "I Bach 1D",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 145,
             "name": "I Bach 2A",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 146,
             "name": "I Bach 2B",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 147,
             "name": "I Bach 3",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 148,
             "name": "I Bach 4",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 149,
             "name": "I Bach 5",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 150,
             "name": "I Bach 6",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 151,
             "name": "I KoSI 1",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 152,
             "name": "I KoSI 2",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 153,
             "name": "I KoSI 3",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 154,
             "name": "I KoSI 4",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 155,
             "name": "I KoSI 5",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 156,
             "name": "I KoSI 6",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 157,
             "name": "I KMI 1",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 158,
             "name": "I KMI 2",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 159,
             "name": "I KMI 3",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 160,
             "name": "I KMI 4",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 161,
             "name": "I KMI 5",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 162,
             "name": "I KMI 6",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 163,
             "name": "I KESS 1",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 164,
             "name": "I KESS 2",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 165,
             "name": "I KESS 3",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 166,
             "name": "I KESS 4",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 167,
             "name": "I KESS 5",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 168,
             "name": "I KESS 6",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 169,
             "name": "I KITS 1",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 170,
             "name": "I KITS 2",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 171,
             "name": "I KITS 3",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 172,
             "name": "I KITS 4",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 173,
             "name": "I KITS 5",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 174,
             "name": "I KITS 6",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 2
+            "examsPerDay": 2,
+            "active": true,
+            "small": false,
+            "obsolete": false
         },
         {
             "id": 175,
             "name": "ALLE",
             "objectName": "",
             "selected": true,
-            "examsPerDay": 3
+            "examsPerDay": 3,
+            "active": true,
+            "small": false,
+            "obsolete": false
         }
     ],
     "id": 0,
