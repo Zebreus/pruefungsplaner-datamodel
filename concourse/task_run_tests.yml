@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: madmanfred/qt5-builder
+    tag: latest
+
+inputs:
+  - name: datamodel-tests
+    optional: false
+  - name: pruefungsplaner-datamodel
+    path: pruefungsplaner-datamodel
+    optional: false
+
+run:
+  path: "./pruefungsplaner-datamodel-tests"
+  dir: ./datamodel-tests
