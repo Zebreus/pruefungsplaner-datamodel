@@ -2,6 +2,8 @@
 
 Group::Group(QObject* parent)
     : SerializableDataObject(parent),
+      selected(false),
+      examsPerDay(0),
       active(true),
       small(false),
       obsolete(false) {}

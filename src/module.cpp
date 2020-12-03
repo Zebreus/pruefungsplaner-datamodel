@@ -1,6 +1,7 @@
 #include <module.h>
 
-Module::Module(QObject* parent) : SerializableDataObject(parent) {}
+Module::Module(QObject* parent)
+    : SerializableDataObject(parent), active(true), examDuration(1) {}
 QString Module::getName() const {
   return name;
 }
