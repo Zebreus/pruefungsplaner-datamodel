@@ -12,6 +12,7 @@
 #include <QTemporaryDir>
 #include <QTextStream>
 #include "plan.h"
+#include "semester.h"
 #include "qthelper.cpp"
 #include "testdatahelper.h"
 
@@ -127,7 +128,7 @@ TEST(planCsvHelperTests, writePlanCreatesFiles) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  EXPECT_TRUE(helper.writePlan(plan));
+  EXPECT_TRUE(helper.writePlan(plan.get()));
   // helper.isWritten is already tested.
   EXPECT_TRUE(helper.isWritten()) << "Plan is not written after check";
 }
@@ -143,7 +144,7 @@ TEST(planCsvHelperTests, writePlanDetectsMissingDirectory) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path() + "/doesnotexist/");
-  EXPECT_FALSE(helper.writePlan(plan))
+  EXPECT_FALSE(helper.writePlan(plan.get()))
       << "Write plan succeeded, but the target directory does not exist";
   EXPECT_FALSE(helper.isWritten()) << "Write plan created directory";
 }
@@ -158,7 +159,7 @@ TEST(planCsvHelperTests, getPathWorks) {
 TEST(planCsvHelperTests, readPlanReturnsNullptrOnFailure) {
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  EXPECT_EQ(helper.readPlan(), QSharedPointer<Plan>(nullptr));
+  EXPECT_EQ(helper.readPlan(), nullptr);
 }
 
 TEST(planCsvHelperTests, readPlanReturnsNullptrOnEmptyFiles) {
@@ -168,7 +169,7 @@ TEST(planCsvHelperTests, readPlanReturnsNullptrOnEmptyFiles) {
   QFile(directory.path() + "/zuege-pruef.csv").open(QFile::ReadWrite);
   QFile(directory.path() + "/zuege-pruef-pref2.csv").open(QFile::ReadWrite);
   PlanCsvHelper helper(directory.path());
-  EXPECT_EQ(helper.readPlan(), QSharedPointer<Plan>(nullptr));
+  EXPECT_EQ(helper.readPlan(), nullptr);
 }
 
 TEST(planCsvHelperTests, readPlanReadsWrittenPlan) {
@@ -176,9 +177,31 @@ TEST(planCsvHelperTests, readPlanReadsWrittenPlan) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, QSharedPointer<Plan>(nullptr));
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
+}
+
+TEST(planCsvHelperTests, readPlanSetsParent) {
+  QSharedPointer<Plan> plan = getValidPlan();
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan.get());
+  Semester semester;
+  Plan* readPlan = helper.readPlan(&semester);
+  ASSERT_EQ(readPlan->parent(), &semester);
+}
+
+TEST(planCsvHelperTests, readPlanSetsParentToNullptr) {
+  QSharedPointer<Plan> plan = getValidPlan();
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan.get());
+  Semester semester;
+  Plan* readPlan = helper.readPlan();
+  ASSERT_EQ(readPlan->parent(), nullptr);
 }
 
 TEST(planCsvHelperTests, readPlanReadsWrittenPlanCorrect) {
@@ -186,9 +209,9 @@ TEST(planCsvHelperTests, readPlanReadsWrittenPlanCorrect) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
 
   // Check that no module got lost
   for (Module* module : plan->getModules()) {
@@ -213,7 +236,7 @@ TEST(planCsvHelperTests, readScheduleDetectsMissingFiles) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  ASSERT_FALSE(helper.readSchedule(plan));
+  ASSERT_FALSE(helper.readSchedule(plan.get()));
 }
 
 TEST(planCsvHelperTests, readScheduleDetectsEmptyFiles) {
@@ -227,7 +250,7 @@ TEST(planCsvHelperTests, readScheduleDetectsEmptyFiles) {
       .open(QFile::ReadWrite);
 
   PlanCsvHelper helper(directory.path());
-  ASSERT_FALSE(helper.readSchedule(plan));
+  ASSERT_FALSE(helper.readSchedule(plan.get()));
 }
 
 TEST(planCsvHelperTests, readScheduleWorksWithReadPlan) {
@@ -235,9 +258,9 @@ TEST(planCsvHelperTests, readScheduleWorksWithReadPlan) {
   prepareScheduledDirectory(directory.path());
 
   PlanCsvHelper helper(directory.path());
-  QSharedPointer<Plan> plan = helper.readPlan();
-  ASSERT_NE(plan, QSharedPointer<Plan>(nullptr));
-  ASSERT_TRUE(helper.readSchedule(plan));
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
+  ASSERT_TRUE(helper.readSchedule(readPlan.get()));
 }
 
 TEST(planCsvHelperTests, readScheduleWorksAndAlsoReadsCorrectSchedule) {
@@ -245,9 +268,9 @@ TEST(planCsvHelperTests, readScheduleWorksAndAlsoReadsCorrectSchedule) {
   prepareScheduledDirectory(directory.path());
 
   PlanCsvHelper helper(directory.path());
-  QSharedPointer<Plan> plan = helper.readPlan();
-  ASSERT_NE(plan, QSharedPointer<Plan>(nullptr));
-  ASSERT_TRUE(helper.readSchedule(plan));
+  QScopedPointer<Plan> plan(helper.readPlan());
+  ASSERT_NE(plan.get(), nullptr);
+  ASSERT_TRUE(helper.readSchedule(plan.get()));
 
   // Assert that the tested modules can be accessed
   ASSERT_GE(plan->getWeeks().size(), 2);
@@ -280,8 +303,8 @@ TEST(planCsvHelperTests, readScheduleRemovesOldScheduledModules) {
   prepareScheduledDirectory(directory.path());
 
   PlanCsvHelper helper(directory.path());
-  QSharedPointer<Plan> plan = helper.readPlan();
-  ASSERT_NE(plan, QSharedPointer<Plan>(nullptr));
+  QScopedPointer<Plan> plan(helper.readPlan());
+  ASSERT_NE(plan.get(), nullptr);
   // Preschedule a module twice, so at least one of them gets removed
   ASSERT_GE(plan->getWeeks().size(), 1);
   ASSERT_GE(plan->getWeeks()[0]->getDays().size(), 1);
@@ -291,7 +314,7 @@ TEST(planCsvHelperTests, readScheduleRemovesOldScheduledModules) {
       plan->getModules()[0]);
   plan->getWeeks()[0]->getDays()[0]->getTimeslots()[1]->addModule(
       plan->getModules()[0]);
-  ASSERT_TRUE(helper.readSchedule(plan));
+  ASSERT_TRUE(helper.readSchedule(plan.get()));
 
   EXPECT_FALSE(plan->getWeeks()[0]
                    ->getDays()[0]
@@ -318,7 +341,7 @@ TEST(planCsvHelperTests, writePlanWritesProbablyCorrectScheduleFile) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  EXPECT_TRUE(helper.writePlan(plan));
+  EXPECT_TRUE(helper.writePlan(plan.get()));
   QFile resultFile(
       directory.path().append("/SPA-ERGEBNIS-PP/SPA-planung-pruef.csv"));
   ASSERT_TRUE(resultFile.open(QFile::ReadOnly));
@@ -341,9 +364,9 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamType) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the module order will be the same
   ASSERT_EQ(readPlan->getModules()[0]->getExamType(), newFirstExamType);
   ASSERT_EQ(readPlan->getModules()[1]->getExamType(), "K");
@@ -362,9 +385,9 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamDuration) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the module order will be the same
   ASSERT_EQ(readPlan->getModules()[0]->getExamDuration(), firstExamDuration);
   ASSERT_EQ(readPlan->getModules()[1]->getExamDuration(), 4);
@@ -388,9 +411,9 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesExamsPerDay) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the order will be the same
   ASSERT_EQ(readPlan->getConstraints()[0]->getExamsPerDay(),
             constraintsExamsPerDay);
@@ -420,8 +443,8 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesActiveGroup) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
   ASSERT_NE(readPlan, nullptr);
   // TODO maybe do not trust that the order will be the same
   /*ASSERT_EQ(readPlan->getConstraints()[0]->getActive(),
@@ -445,9 +468,9 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesObsoleteGroup) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the order will be the same
   ASSERT_EQ(readPlan->getGroups()[0]->getObsolete(), groupZeroObsolete);
   ASSERT_EQ(readPlan->getGroups()[1]->getObsolete(), true);
@@ -466,9 +489,9 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesSmallGroup) {
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
-  helper.writePlan(plan);
-  QSharedPointer<Plan> readPlan = helper.readPlan();
-  ASSERT_NE(readPlan, nullptr);
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the order will be the same
   ASSERT_EQ(readPlan->getGroups()[0]->getSmall(), groupZeroSmall);
   ASSERT_EQ(readPlan->getGroups()[1]->getSmall(), true);

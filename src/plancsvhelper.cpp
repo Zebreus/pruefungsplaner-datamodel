@@ -9,8 +9,8 @@ PlanCsvHelper::PlanCsvHelper() : temporaryDirectory(new QTemporaryDir()) {
   initializeFilePaths();
 }
 
-QSharedPointer<Plan> PlanCsvHelper::readPlan() {
-  QSharedPointer<Plan> newPlan(new Plan());
+Plan* PlanCsvHelper::readPlan(QObject* parent) {
+  QScopedPointer<Plan> newPlan(new Plan(parent));
   // TODO add support for custom names
   newPlan->setName("new plan");
 
@@ -50,26 +50,26 @@ QSharedPointer<Plan> PlanCsvHelper::readPlan() {
     week->setDays(days);
   }
 
-  if (!readExamsIntervalsFile(newPlan)) {
+  if (!readExamsIntervalsFile(newPlan.get())) {
     return nullptr;
   }
 
-  if (!readGroupsExamsFile(newPlan)) {
+  if (!readGroupsExamsFile(newPlan.get())) {
     return nullptr;
   }
 
-  if (!readExamsFile(newPlan)) {
+  if (!readExamsFile(newPlan.get())) {
     return nullptr;
   }
 
-  if (!readGroupsExamsPrefFile(newPlan)) {
+  if (!readGroupsExamsPrefFile(newPlan.get())) {
     return nullptr;
   }
 
-  return newPlan;
+  return newPlan.take();
 }
 
-bool PlanCsvHelper::writePlan(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writePlan(Plan* plan) {
   if (plan == nullptr) {
     return false;
   }
@@ -91,7 +91,7 @@ QString PlanCsvHelper::getPath() {
   return basePath;
 }
 
-bool PlanCsvHelper::readSchedule(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::readSchedule(Plan* plan) {
   if (!planningExamsResultFile.open(QFile::ReadOnly)) {
     return false;
   }
@@ -207,7 +207,7 @@ void PlanCsvHelper::initializeFilePaths() {
                                     "/SPA-ERGEBNIS-PP/SPA-zuege-pruef.csv");
 }
 
-bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writeExamsIntervalsFile(Plan* plan) {
   if (!examsIntervalsFile.open(QFile::ReadWrite)) {
     return false;
   }
@@ -275,7 +275,7 @@ bool PlanCsvHelper::writeExamsIntervalsFile(QSharedPointer<Plan> plan) {
   // TODO Check if the second part of the csv file is needed
 }
 
-bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writeExamsFile(Plan* plan) {
   if (!examsFile.open(QFile::ReadWrite)) {
     return false;
   }
@@ -328,7 +328,7 @@ bool PlanCsvHelper::writeExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writeGroupsExamsFile(Plan* plan) {
   if (!groupsExamsFile.open(QFile::ReadWrite)) {
     return false;
   }
@@ -394,7 +394,7 @@ bool PlanCsvHelper::writeGroupsExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::writeGroupsExamsPrefFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writeGroupsExamsPrefFile(Plan* plan) {
   if (!groupsExamsPrefFile.open(QFile::ReadWrite)) {
     return false;
   }
@@ -426,7 +426,7 @@ bool PlanCsvHelper::writeGroupsExamsPrefFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::writePlanningExamsResultFile(Plan* plan) {
   if (!QDir(basePath).exists()) {
     return false;
   }
@@ -527,7 +527,7 @@ bool PlanCsvHelper::writePlanningExamsResultFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::readExamsIntervalsFile(Plan* plan) {
   if (!examsIntervalsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -552,7 +552,7 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
 
   QList<Group*> constraints = plan->getConstraints();
   for (int i = 1; i < firstLine.size() - 1; i++) {
-    Group* group = new Group(plan.get());
+    Group* group = new Group(plan);
     group->setName(firstLine[i]);
     bool parseIntWorked;
     unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
@@ -595,7 +595,7 @@ bool PlanCsvHelper::readExamsIntervalsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::readExamsFile(Plan* plan) {
   if (!examsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -613,7 +613,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
       examsFile.close();
       return false;
     }
-    Module* module = new Module(plan.get());
+    Module* module = new Module(plan);
     module->setName(words[2]);
     module->setOrigin(words[4]);
     module->setNumber(words[3]);
@@ -682,7 +682,7 @@ bool PlanCsvHelper::readExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::readGroupsExamsFile(Plan* plan) {
   if (!groupsExamsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -706,7 +706,7 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
 
   QList<Group*> groups = plan->getGroups();
   for (int i = 1; i < firstLine.size() - 1; i++) {
-    Group* group = new Group(plan.get());
+    Group* group = new Group(plan);
     group->setName(firstLine[i]);
     bool parseIntWorked;
     unsigned int examsPerDay = secondLine[i].toUInt(&parseIntWorked);
@@ -749,7 +749,7 @@ bool PlanCsvHelper::readGroupsExamsFile(QSharedPointer<Plan> plan) {
   return true;
 }
 
-bool PlanCsvHelper::readGroupsExamsPrefFile(QSharedPointer<Plan> plan) {
+bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
   if (!groupsExamsPrefFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
