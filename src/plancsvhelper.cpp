@@ -658,13 +658,16 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
       return false;
     }
 
-    if (words.size() == 8) {
-      unsigned int examDuration = words[6].toUInt();
-      // QString::toUInt returns 0 if the conversion fails. 0 also not allowed
-      // as a value for examDuration, so we can abort here
-      if (examDuration == 0) {
+    if (words[6] != "") {
+      bool ok;
+      unsigned int examDuration = words[6].toUInt(&ok);
+
+      if (!ok) {
         examsFile.close();
         return false;
+      }
+      if(examDuration != 1 && examDuration != 2){
+          qDebug() << "Mysterious bug appeared, where the exam duration is not 1 or 2";
       }
       module->setExamDuration(examDuration);
     } else {
