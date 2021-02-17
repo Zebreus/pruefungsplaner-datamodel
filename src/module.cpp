@@ -73,8 +73,10 @@ void Module::setExamDuration(unsigned int examDuration) {
   if (this->examDuration == examDuration)
     return;
 
-  if (examDuration == 0)
+  if (examDuration != 1 && examDuration != 2){
+    std::clog << "WARNING: tried to set examDuration to an invalid value.\n";
     return;
+  }
 
   this->examDuration = examDuration;
   emit examDurationChanged(this->examDuration);
