@@ -380,8 +380,8 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamDuration) {
   unsigned int firstExamDuration = plan->getModules()[0]->getExamDuration();
   firstExamDuration++;
   plan->getModules()[0]->setExamDuration(firstExamDuration);
-  plan->getModules()[1]->setExamDuration(4);
-  plan->getModules()[2]->setExamDuration(3);
+  plan->getModules()[1]->setExamDuration(2);
+  plan->getModules()[2]->setExamDuration(1);
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
@@ -390,8 +390,40 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamDuration) {
   ASSERT_NE(readPlan.get(), nullptr);
   // TODO maybe do not trust that the module order will be the same
   ASSERT_EQ(readPlan->getModules()[0]->getExamDuration(), firstExamDuration);
-  ASSERT_EQ(readPlan->getModules()[1]->getExamDuration(), 4);
-  ASSERT_EQ(readPlan->getModules()[2]->getExamDuration(), 3);
+  ASSERT_EQ(readPlan->getModules()[1]->getExamDuration(), 2);
+  ASSERT_EQ(readPlan->getModules()[2]->getExamDuration(), 1);
+}
+
+//TODO This test does not belong here, but in the tests for Module
+TEST(planCsvHelperTests, writingAndReadingPlanFixesInvalidExamDuration) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  unsigned int firstExamDuration = plan->getModules()[0]->getExamDuration();
+  firstExamDuration++;
+  plan->getModules()[0]->setExamDuration(firstExamDuration);
+  plan->getModules()[1]->setExamDuration(1);
+  plan->getModules()[1]->setExamDuration(0);
+  plan->getModules()[2]->setExamDuration(1);
+  plan->getModules()[2]->setExamDuration(1);
+  plan->getModules()[3]->setExamDuration(1);
+  plan->getModules()[3]->setExamDuration(2);
+  plan->getModules()[4]->setExamDuration(1);
+  plan->getModules()[4]->setExamDuration(3);
+  plan->getModules()[5]->setExamDuration(1);
+  plan->getModules()[5]->setExamDuration(4);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
+  // TODO maybe do not trust that the module order will be the same
+  // Ensure that every exam has a valid duration
+  ASSERT_EQ(readPlan->getModules()[0]->getExamDuration(), firstExamDuration);
+  ASSERT_EQ(readPlan->getModules()[1]->getExamDuration(), 1);
+  ASSERT_EQ(readPlan->getModules()[2]->getExamDuration(), 1);
+  ASSERT_EQ(readPlan->getModules()[3]->getExamDuration(), 2);
+  ASSERT_EQ(readPlan->getModules()[4]->getExamDuration(), 1);
+  ASSERT_EQ(readPlan->getModules()[5]->getExamDuration(), 1);
 }
 
 TEST(planCsvHelperTests, writingAndReadingPlanPreservesExamsPerDay) {
