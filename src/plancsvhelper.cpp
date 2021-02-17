@@ -282,6 +282,11 @@ bool PlanCsvHelper::writeExamsFile(Plan* plan) {
   QTextStream fileStream(&examsFile);
 
   for (Module* module : plan->getModules()) {
+    // Comment inactive modules
+    if (module->getActive() == false) {
+      fileStream << "//";
+    }
+
     // TODO Check somewhere else
     if (module->getOrigin() == "EIT") {
       // SPA-algorithmus fails if there are EIT exams, because "Prüfungen von
@@ -605,18 +610,33 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
   QList<QString> words = fileStream.readLine().split(";");
   QList<Module*> modules = plan->getModules();
   while (!words.isEmpty() && words.first() != "-ENDE-") {
+    // If the line is a commented, but still a valid line it is loaded as an
+    // inactive module
+    bool comment = false;
     if (words.first().startsWith("//")) {
-      words = fileStream.readLine().split(";");
-      continue;
+      comment = true;
+      words[0] = words[0].right(words[0].size() - 2);
     }
+
     if (words.size() != 7 && words.size() != 8) {
-      examsFile.close();
-      return false;
+      if (comment) {
+        words = fileStream.readLine().split(";");
+        continue;
+      } else {
+        examsFile.close();
+        return false;
+      }
     }
     Module* module = new Module(plan);
+
+    if(comment){
+        module->setActive(false);
+    }
+
     module->setName(words[2]);
     module->setOrigin(words[4]);
     module->setNumber(words[3]);
+    bool foundAllGroups = true;
     for (QString groupName : words[1].split(",")) {
       bool foundGroup = false;
       for (Group* group : plan->getGroups()) {
@@ -629,6 +649,15 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
         }
       }
       if (!foundGroup) {
+        foundAllGroups = false;
+        break;
+      }
+    }
+    if (!foundAllGroups) {
+      if (comment) {
+        words = fileStream.readLine().split(";");
+        continue;
+      } else {
         examsFile.close();
         return false;
       }
@@ -646,16 +675,26 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
         }
       }
       if (!foundConstraint) {
-        examsFile.close();
-        return false;
+        if (comment) {
+          words = fileStream.readLine().split(";");
+          continue;
+        } else {
+          examsFile.close();
+          return false;
+        }
       }
     }
 
     if (words[5] == "P" || words[5] == "K") {
       module->setExamType(words[5]);
     } else {
-      examsFile.close();
-      return false;
+      if (comment) {
+        words = fileStream.readLine().split(";");
+        continue;
+      } else {
+        examsFile.close();
+        return false;
+      }
     }
 
     if (words[6] != "") {
@@ -663,11 +702,17 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
       unsigned int examDuration = words[6].toUInt(&ok);
 
       if (!ok) {
-        examsFile.close();
-        return false;
+        if (comment) {
+          words = fileStream.readLine().split(";");
+          continue;
+        } else {
+          examsFile.close();
+          return false;
+        }
       }
-      if(examDuration != 1 && examDuration != 2){
-          qDebug() << "Mysterious bug appeared, where the exam duration is not 1 or 2";
+      if (examDuration != 1 && examDuration != 2) {
+        qDebug()
+            << "Mysterious bug appeared, where the exam duration is not 1 or 2";
       }
       module->setExamDuration(examDuration);
     } else {
