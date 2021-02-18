@@ -670,6 +670,7 @@ bool PlanCsvHelper::readExamsFile(Plan* plan,
         // TODO Surprising behaviour, when a line is commented and a group is
         // added, but that line gets discarded later on
         if (addMissingGroups) {
+          qDebug() << "Adding missing group " << groupName;
           Group* newGroup = new Group(plan);
           newGroup->setName(groupName);
           auto planGroups = plan->getGroups();
@@ -707,6 +708,7 @@ bool PlanCsvHelper::readExamsFile(Plan* plan,
       }
       if (!foundConstraint) {
         if (addMissingGroups) {
+          qDebug() << "Adding missing constraint " << words[0];
           Group* newConstraint = new Group(plan);
           newConstraint->setName(words[0]);
           auto planConstraints = plan->getConstraints();
@@ -845,7 +847,7 @@ bool PlanCsvHelper::readGroupsExamsFile(Plan* plan) {
   return true;
 }
 
-bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
+bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan, bool addMissingGroups) {
   if (!groupsExamsPrefFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -873,8 +875,18 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
       }
     }
     if (!found) {
-      groupsExamsPrefFile.close();
-      return false;
+      if (addMissingGroups && line[0] != "") {
+        qDebug() << "Adding missing group " << line[0];
+        Group* newGroup = new Group(plan);
+        newGroup->setName(line[0]);
+        newGroup->setActive(false);
+        auto planGroups = plan->getGroups();
+        planGroups.append(newGroup);
+        plan->setGroups(planGroups);
+      } else {
+        groupsExamsPrefFile.close();
+        return false;
+      }
     }
     line = fileStream.readLine().split(";");
   }
@@ -894,8 +906,18 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
       }
     }
     if (!found) {
-      groupsExamsPrefFile.close();
-      return false;
+      if (addMissingGroups && line[0] != "") {
+        qDebug() << "Adding missing group " << line[0];
+        Group* newGroup = new Group(plan);
+        newGroup->setName(line[0]);
+        newGroup->setSmall(true);
+        auto planGroups = plan->getGroups();
+        planGroups.append(newGroup);
+        plan->setGroups(planGroups);
+      } else {
+        groupsExamsPrefFile.close();
+        return false;
+      }
     }
     line = fileStream.readLine().split(";");
   }
@@ -915,8 +937,18 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
       }
     }
     if (!found) {
-      groupsExamsPrefFile.close();
-      return false;
+      if (addMissingGroups && line[0] != "") {
+        qDebug() << "Adding missing group " << line[0];
+        Group* newGroup = new Group(plan);
+        newGroup->setName(line[0]);
+        newGroup->setObsolete(true);
+        auto planGroups = plan->getGroups();
+        planGroups.append(newGroup);
+        plan->setGroups(planGroups);
+      } else {
+        groupsExamsPrefFile.close();
+        return false;
+      }
     }
     line = fileStream.readLine().split(";");
   }

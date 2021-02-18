@@ -205,7 +205,7 @@ class PlanCsvHelper {
    * If reading the file fails, plan has to be considered as invalid and get
    * deleted
    */
-  bool readGroupsExamsPrefFile(Plan* plan);
+  bool readGroupsExamsPrefFile(Plan* plan, bool addMissingGroups = true);
 };
 
 #endif  // PLANCSVHELPER_H
