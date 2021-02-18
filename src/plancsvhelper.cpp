@@ -613,6 +613,12 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
 
   QList<QString> words = fileStream.readLine().split(";");
   QList<Module*> modules = plan->getModules();
+
+  // If the first line is the generated header, skip it
+  if(words.size() >= 3 && (words[1] == "Kategorie" || words[2] == "Modul" )){
+      words = fileStream.readLine().split(";");
+  }
+
   while (!words.isEmpty() && words.first() != "-ENDE-") {
     // If the line is a commented, but still a valid line it is loaded as an
     // inactive module
