@@ -861,6 +861,7 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
   QList<QString> line = fileStream.readLine().split(";");
   while (line.size() >= 1 && line[0] != "-ENDE-") {
     if (line[0].startsWith("//")) {
+      line = fileStream.readLine().split(";");
       continue;
     }
     bool found = false;
@@ -881,6 +882,7 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
   line = fileStream.readLine().split(";");
   while (line.size() >= 1 && line[0] != "-ENDE-") {
     if (line[0].startsWith("//")) {
+      line = fileStream.readLine().split(";");
       continue;
     }
     bool found = false;
@@ -901,6 +903,7 @@ bool PlanCsvHelper::readGroupsExamsPrefFile(Plan* plan) {
   line = fileStream.readLine().split(";");
   while (line.size() >= 1 && line[0] != "-ENDE-") {
     if (line[0].startsWith("//")) {
+      line = fileStream.readLine().split(";");
       continue;
     }
     bool found = false;
