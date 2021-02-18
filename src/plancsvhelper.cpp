@@ -701,7 +701,7 @@ bool PlanCsvHelper::readExamsFile(Plan* plan,
         if (constraint->getName() == words[0]) {
           auto constraints = module->getConstraints();
           constraints.append(constraint);
-          module->setGroups(constraints);
+          module->setConstraints(constraints);
           foundConstraint = true;
           break;
         }
