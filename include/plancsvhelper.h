@@ -184,7 +184,7 @@ class PlanCsvHelper {
    * If reading the file fails, plan has to be considered as invalid and get
    * deleted
    */
-  bool readExamsFile(Plan* plan);
+  bool readExamsFile(Plan* plan, bool parseComments = true, bool addMissingGroups = true);
 
   /**
    *  @brief Read the zuege-pruef.csv file and add the information to plan

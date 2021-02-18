@@ -604,7 +604,7 @@ bool PlanCsvHelper::readExamsIntervalsFile(Plan* plan) {
   return true;
 }
 
-bool PlanCsvHelper::readExamsFile(Plan* plan) {
+bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissingGroups) {
   if (!examsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -624,8 +624,13 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
     // inactive module
     bool comment = false;
     if (words.first().startsWith("//")) {
-      comment = true;
-      words[0] = words[0].right(words[0].size() - 2);
+      if(parseComments){
+        comment = true;
+        words[0] = words[0].right(words[0].size() - 2).trimmed();
+      }else{
+        words = fileStream.readLine().split(";");
+        continue;
+      }
     }
 
     if (words.size() != 7 && words.size() != 8) {
@@ -659,8 +664,20 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
         }
       }
       if (!foundGroup) {
-        foundAllGroups = false;
+        //TODO Surprising behaviour, when a line is commented and a group is added, but that line gets discarded later on
+        if(addMissingGroups){
+            Group* newGroup = new Group(plan);
+            newGroup->setName(groupName);
+            auto planGroups = plan->getGroups();
+            planGroups.append(newGroup);
+            plan->setGroups(planGroups);
+            auto moduleGroups = module->getGroups();
+            moduleGroups.append(newGroup);
+            module->setGroups(moduleGroups);
+        }else{
+            foundAllGroups = false;
         break;
+        }
       }
     }
     if (!foundAllGroups) {
@@ -685,12 +702,23 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
         }
       }
       if (!foundConstraint) {
+        if(addMissingGroups){
+            Group* newConstraint = new Group(plan);
+            newConstraint->setName(words[0]);
+            auto planConstraints = plan->getConstraints();
+            planConstraints.append(newConstraint);
+            plan->setConstraints(planConstraints);
+            auto moduleConstraints = module->getConstraints();
+            moduleConstraints.append(newConstraint);
+            module->setConstraints(moduleConstraints);
+        }else{
         if (comment) {
           words = fileStream.readLine().split(";");
           continue;
         } else {
           examsFile.close();
           return false;
+        }
         }
       }
     }
