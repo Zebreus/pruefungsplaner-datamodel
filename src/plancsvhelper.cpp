@@ -246,23 +246,23 @@ bool PlanCsvHelper::writeExamsIntervalsFile(Plan* plan) {
   }
 
   /*
-  //TODO check if correct blocknames are neccesary
-  for (Week* week : plan->weeks) {
-    for (Day* day : week->getDays()) {
-      for (Timeslot* timeslot : day->getTimeslots()) {
-        fileStream << day->name().chopped(2) << week->name().chopped(1) << "_"
-                   << timeslot->name() << ";";
-        for (Group* constraint : plan->constraints) {
-          if (timeslot->containsActiveGroup(constraint)) {
-            fileStream << "FREI;";
-          } else {
-            fileStream << "BLOCKIERT;";
-          }
+//TODO check if correct blocknames are neccesary
+for (Week* week : plan->weeks) {
+  for (Day* day : week->getDays()) {
+    for (Timeslot* timeslot : day->getTimeslots()) {
+      fileStream << day->name().chopped(2) << week->name().chopped(1) << "_"
+                 << timeslot->name() << ";";
+      for (Group* constraint : plan->constraints) {
+        if (timeslot->containsActiveGroup(constraint)) {
+          fileStream << "FREI;";
+        } else {
+          fileStream << "BLOCKIERT;";
         }
       }
     }
   }
-  */
+}
+*/
 
   fileStream << "-ENDE-;";
   for (int i = 0; i < plan->getConstraints().size(); i++) {
@@ -372,23 +372,23 @@ bool PlanCsvHelper::writeGroupsExamsFile(Plan* plan) {
   }
 
   /*
-  //TODO check if correct blocknames are neccesary
-  for (Week* week : plan->weeks) {
-    for (Day* day : week->getDays()) {
-      for (Timeslot* timeslot : day->getTimeslots()) {
-        fileStream << day->name().chopped(2) << week->name().chopped(1) << "_"
-                   << timeslot->name() << ";";
-        for (Group* group : plan->groups) {
-          if (timeslot->containsActiveGroup(group)) {
-            fileStream << "FREI;";
-          } else {
-            fileStream << "BLOCKIERT;";
-          }
+//TODO check if correct blocknames are neccesary
+for (Week* week : plan->weeks) {
+  for (Day* day : week->getDays()) {
+    for (Timeslot* timeslot : day->getTimeslots()) {
+      fileStream << day->name().chopped(2) << week->name().chopped(1) << "_"
+                 << timeslot->name() << ";";
+      for (Group* group : plan->groups) {
+        if (timeslot->containsActiveGroup(group)) {
+          fileStream << "FREI;";
+        } else {
+          fileStream << "BLOCKIERT;";
         }
       }
     }
   }
-  */
+}
+*/
 
   fileStream << "-ENDE-;";
   for (int i = 0; i < plan->getGroups().size(); i++) {
@@ -542,13 +542,14 @@ bool PlanCsvHelper::readExamsIntervalsFile(Plan* plan) {
   // Read and check first two lines
   int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
-  if (firstLine.size() < 2 || firstLine[0] != "Block" || firstLine.last() != "-ENDE-" ) {
-    while( firstLine.size() > 0 && firstLine.last() != "-ENDE-" ){
-        firstLine.takeLast();
+  if (firstLine.size() < 2 || firstLine[0] != "Block" ||
+      firstLine.last() != "-ENDE-") {
+    while (firstLine.size() > 0 && firstLine.last() != "-ENDE-") {
+      firstLine.takeLast();
     }
-    if(firstLine.size() == 0){
-        examsIntervalsFile.close();
-        return false;
+    if (firstLine.size() == 0) {
+      examsIntervalsFile.close();
+      return false;
     }
   }
   wordsPerLine = firstLine.size();
@@ -604,7 +605,9 @@ bool PlanCsvHelper::readExamsIntervalsFile(Plan* plan) {
   return true;
 }
 
-bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissingGroups) {
+bool PlanCsvHelper::readExamsFile(Plan* plan,
+                                  bool parseComments,
+                                  bool addMissingGroups) {
   if (!examsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return false;
   }
@@ -615,8 +618,8 @@ bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissin
   QList<Module*> modules = plan->getModules();
 
   // If the first line is the generated header, skip it
-  if(words.size() >= 3 && (words[1] == "Kategorie" || words[2] == "Modul" )){
-      words = fileStream.readLine().split(";");
+  if (words.size() >= 3 && (words[1] == "Kategorie" || words[2] == "Modul")) {
+    words = fileStream.readLine().split(";");
   }
 
   while (!words.isEmpty() && words.first() != "-ENDE-") {
@@ -624,10 +627,10 @@ bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissin
     // inactive module
     bool comment = false;
     if (words.first().startsWith("//")) {
-      if(parseComments){
+      if (parseComments) {
         comment = true;
         words[0] = words[0].right(words[0].size() - 2).trimmed();
-      }else{
+      } else {
         words = fileStream.readLine().split(";");
         continue;
       }
@@ -644,8 +647,8 @@ bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissin
     }
     Module* module = new Module(plan);
 
-    if(comment){
-        module->setActive(false);
+    if (comment) {
+      module->setActive(false);
     }
 
     module->setName(words[2]);
@@ -664,19 +667,20 @@ bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissin
         }
       }
       if (!foundGroup) {
-        //TODO Surprising behaviour, when a line is commented and a group is added, but that line gets discarded later on
-        if(addMissingGroups){
-            Group* newGroup = new Group(plan);
-            newGroup->setName(groupName);
-            auto planGroups = plan->getGroups();
-            planGroups.append(newGroup);
-            plan->setGroups(planGroups);
-            auto moduleGroups = module->getGroups();
-            moduleGroups.append(newGroup);
-            module->setGroups(moduleGroups);
-        }else{
-            foundAllGroups = false;
-        break;
+        // TODO Surprising behaviour, when a line is commented and a group is
+        // added, but that line gets discarded later on
+        if (addMissingGroups) {
+          Group* newGroup = new Group(plan);
+          newGroup->setName(groupName);
+          auto planGroups = plan->getGroups();
+          planGroups.append(newGroup);
+          plan->setGroups(planGroups);
+          auto moduleGroups = module->getGroups();
+          moduleGroups.append(newGroup);
+          module->setGroups(moduleGroups);
+        } else {
+          foundAllGroups = false;
+          break;
         }
       }
     }
@@ -702,23 +706,23 @@ bool PlanCsvHelper::readExamsFile(Plan* plan, bool parseComments, bool addMissin
         }
       }
       if (!foundConstraint) {
-        if(addMissingGroups){
-            Group* newConstraint = new Group(plan);
-            newConstraint->setName(words[0]);
-            auto planConstraints = plan->getConstraints();
-            planConstraints.append(newConstraint);
-            plan->setConstraints(planConstraints);
-            auto moduleConstraints = module->getConstraints();
-            moduleConstraints.append(newConstraint);
-            module->setConstraints(moduleConstraints);
-        }else{
-        if (comment) {
-          words = fileStream.readLine().split(";");
-          continue;
+        if (addMissingGroups) {
+          Group* newConstraint = new Group(plan);
+          newConstraint->setName(words[0]);
+          auto planConstraints = plan->getConstraints();
+          planConstraints.append(newConstraint);
+          plan->setConstraints(planConstraints);
+          auto moduleConstraints = module->getConstraints();
+          moduleConstraints.append(newConstraint);
+          module->setConstraints(moduleConstraints);
         } else {
-          examsFile.close();
-          return false;
-        }
+          if (comment) {
+            words = fileStream.readLine().split(";");
+            continue;
+          } else {
+            examsFile.close();
+            return false;
+          }
         }
       }
     }
@@ -778,13 +782,14 @@ bool PlanCsvHelper::readGroupsExamsFile(Plan* plan) {
   // Read and check first two lines
   int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
-  if (firstLine.size() < 2 || firstLine[0] != "Block" || firstLine.last() != "-ENDE-" ) {
-    while( firstLine.size() > 0 && firstLine.last() != "-ENDE-" ){
-        firstLine.takeLast();
+  if (firstLine.size() < 2 || firstLine[0] != "Block" ||
+      firstLine.last() != "-ENDE-") {
+    while (firstLine.size() > 0 && firstLine.last() != "-ENDE-") {
+      firstLine.takeLast();
     }
-    if(firstLine.size() == 0){
-        examsIntervalsFile.close();
-        return false;
+    if (firstLine.size() == 0) {
+      examsIntervalsFile.close();
+      return false;
     }
   }
   wordsPerLine = firstLine.size();
