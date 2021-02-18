@@ -542,21 +542,25 @@ bool PlanCsvHelper::readExamsIntervalsFile(Plan* plan) {
   // Read and check first two lines
   int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
-  if (firstLine.size() < 2 || firstLine[0] != "Block" ||
-      firstLine.last() != "-ENDE-") {
-    examsIntervalsFile.close();
-    return false;
+  if (firstLine.size() < 2 || firstLine[0] != "Block" || firstLine.last() != "-ENDE-" ) {
+    while( firstLine.size() > 0 && firstLine.last() != "-ENDE-" ){
+        firstLine.takeLast();
+    }
+    if(firstLine.size() == 0){
+        examsIntervalsFile.close();
+        return false;
+    }
   }
   wordsPerLine = firstLine.size();
+
   QList<QString> secondLine = fileStream.readLine().split(";");
-  if (secondLine.size() != wordsPerLine ||
-      secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
+  if (secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
     examsIntervalsFile.close();
     return false;
   }
 
   QList<Group*> constraints = plan->getConstraints();
-  for (int i = 1; i < firstLine.size() - 1; i++) {
+  for (int i = 1; i < wordsPerLine - 1; i++) {
     Group* group = new Group(plan);
     group->setName(firstLine[i]);
     bool parseIntWorked;
@@ -738,22 +742,27 @@ bool PlanCsvHelper::readGroupsExamsFile(Plan* plan) {
   QTextStream fileStream(&groupsExamsFile);
 
   // Read and check first two lines
+  int wordsPerLine;
   QList<QString> firstLine = fileStream.readLine().split(";");
-  if (firstLine.size() < 2 || firstLine[0] != "Block" ||
-      firstLine.last() != "-ENDE-") {
-    groupsExamsFile.close();
-    return false;
+  if (firstLine.size() < 2 || firstLine[0] != "Block" || firstLine.last() != "-ENDE-" ) {
+    while( firstLine.size() > 0 && firstLine.last() != "-ENDE-" ){
+        firstLine.takeLast();
+    }
+    if(firstLine.size() == 0){
+        examsIntervalsFile.close();
+        return false;
+    }
   }
-  int wordsPerLine = firstLine.size();
+  wordsPerLine = firstLine.size();
+
   QList<QString> secondLine = fileStream.readLine().split(";");
-  if (secondLine.size() != wordsPerLine ||
-      secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
+  if (secondLine[0] != QString("Maximale Prü/Tag") || secondLine.last() != "") {
     groupsExamsFile.close();
     return false;
   }
 
   QList<Group*> groups = plan->getGroups();
-  for (int i = 1; i < firstLine.size() - 1; i++) {
+  for (int i = 1; i < wordsPerLine - 1; i++) {
     Group* group = new Group(plan);
     group->setName(firstLine[i]);
     bool parseIntWorked;
