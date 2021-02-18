@@ -689,7 +689,7 @@ bool PlanCsvHelper::readExamsFile(Plan* plan) {
       }
     }
 
-    if (words[5] == "P" || words[5] == "K") {
+    if (words[5] == "P" || words[5] == "K" || words[5] == "-") {
       module->setExamType(words[5]);
     } else {
       if (comment) {
