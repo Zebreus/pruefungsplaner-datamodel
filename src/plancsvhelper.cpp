@@ -313,7 +313,7 @@ bool PlanCsvHelper::writeExamsFile(Plan* plan) {
     fileStream << module->getNumber() << ";";
     fileStream << module->getOrigin() << ";";
 
-    if (module->getExamType() == "K" || module->getExamType() == "P") {
+    if (module->getExamType() == "K" || module->getExamType() == "P" || module->getExamType() == "-") {
       fileStream << module->getExamType() << ";";
     } else {
       examsFile.close();
@@ -469,7 +469,7 @@ bool PlanCsvHelper::writePlanningExamsResultFile(Plan* plan) {
             fileStream << "1";
           }
           fileStream << ";";
-          if (module->getExamType() == "K" || module->getExamType() == "P") {
+          if (module->getExamType() == "K" || module->getExamType() == "P" || module->getExamType() == "-") {
             fileStream << module->getExamType() << ";";
           } else {
             planningExamsResultFile.close();

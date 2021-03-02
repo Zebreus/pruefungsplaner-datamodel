@@ -58,7 +58,7 @@ void Module::setExamType(QString examType) {
   if (this->examType == examType)
     return;
 
-  if (examType != "P" && examType != "K")
+  if (examType != "P" && examType != "K" && examType != "-")
     return;
 
   this->examType = examType;
