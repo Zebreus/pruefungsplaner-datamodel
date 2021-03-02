@@ -5,7 +5,7 @@ BelegNr;Zug;Modul;Import;Prüfungsform;Zuordnung;Tag;Block;
 30.7116;;Grundlagen der diskreten Mathematik;1;K;I Bach 1B/I Bach 1C/I Bach 1D/I KESS 1/I KITS 1/I KMI 1/I KoSI 1/ALLE (MI2_1);10;1;
 30.7126;;IT-Sicherheit;0;K;I Bach 1B/I Bach 1C/I Bach 1D/I KESS 1/I KITS 1/I KMI 1/I KoSI 1/ALLE (DO1_1);4;1;
 30.7214;;IT-Recht und Datenschutz;1;K;I Bach 2A/I Bach 2B/I KESS 1/I KITS 1/I KMI 4/I KoSI 1/ALLE (MO2_2);8;2;
-30.7104;C;Programmieren / Algorithmen und Datenstrukturen 1;0;K;I Bach 1C/I KESS 1/ALLE (FR1_1);5;1;
+30.7104;C;Programmieren / Algorithmen und Datenstrukturen 1;0;-;I Bach 1C/I KESS 1/ALLE (FR1_1);5;1;
 30.7102;;Netzwerke;0;K;I Bach 2A/I Bach 2B/I KESS 4/I KITS 4/I KoSI 2/ALLE (DO1_2);4;2;
 30.7104;A;Programmieren / Algorithmen und Datenstrukturen 1;0;K;I KoSI 1/ALLE (FR2_2);12;2;
 30.7114;;Einführung in die Wirtschaftsinformatik;0;K;I Bach 1B/I Bach 1C/I Bach 1D/I KMI 1/I KoSI 1/ALLE (FR1_2);5;2;

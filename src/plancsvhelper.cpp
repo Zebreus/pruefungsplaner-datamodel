@@ -283,7 +283,8 @@ bool PlanCsvHelper::writeExamsFile(Plan* plan) {
 
   for (Module* module : plan->getModules()) {
     // Comment inactive modules
-    if (module->getActive() == false) {
+    // Exam type "-" forces a module inactive
+    if (module->getActive() == false || module->getExamType() == "-"){
       fileStream << "//";
     }
 
@@ -730,6 +731,10 @@ bool PlanCsvHelper::readExamsFile(Plan* plan,
     }
 
     if (words[5] == "P" || words[5] == "K" || words[5] == "-") {
+      //Exam type "-" forces modules inactive
+      if(words[5] == "-"){
+          module->setActive(false);
+      }
       module->setExamType(words[5]);
     } else {
       if (comment) {

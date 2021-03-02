@@ -361,6 +361,7 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamType) {
   plan->getModules()[0]->setExamType(newFirstExamType);
   plan->getModules()[1]->setExamType("K");
   plan->getModules()[2]->setExamType("P");
+  plan->getModules()[3]->setExamType("-");
 
   QTemporaryDir directory;
   PlanCsvHelper helper(directory.path());
@@ -371,9 +372,33 @@ TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleExamType) {
   ASSERT_EQ(readPlan->getModules()[0]->getExamType(), newFirstExamType);
   ASSERT_EQ(readPlan->getModules()[1]->getExamType(), "K");
   ASSERT_EQ(readPlan->getModules()[2]->getExamType(), "P");
+  ASSERT_EQ(readPlan->getModules()[3]->getExamType(), "-");
 
   // TODO assert that the results file also contains the correct values
 }
+
+TEST(planCsvHelperTests, writingAnExamTypeDashModuleMakesItInactive) {
+  QSharedPointer<Plan> plan = getValidPlan();
+  plan->getModules()[0]->setExamType("K");
+  plan->getModules()[0]->setActive(true);
+  plan->getModules()[1]->setExamType("P");
+  plan->getModules()[1]->setActive(true);
+  plan->getModules()[2]->setExamType("-");
+  plan->getModules()[2]->setActive(true);
+
+  QTemporaryDir directory;
+  PlanCsvHelper helper(directory.path());
+  helper.writePlan(plan.get());
+  QScopedPointer<Plan> readPlan(helper.readPlan());
+  ASSERT_NE(readPlan.get(), nullptr);
+  // TODO maybe do not trust that the module order will be the same
+  ASSERT_EQ(readPlan->getModules()[0]->getActive(), true);
+  ASSERT_EQ(readPlan->getModules()[1]->getActive(), true);
+  ASSERT_EQ(readPlan->getModules()[2]->getActive(), false);
+
+  // TODO assert that the results file also contains the correct values
+}
+
 
 TEST(planCsvHelperTests, writingAndReadingPlanPreservesModuleActive) {
   QSharedPointer<Plan> plan = getValidPlan();
