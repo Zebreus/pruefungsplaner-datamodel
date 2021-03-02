@@ -476,7 +476,7 @@
             "examDuration": 2
         },
         {
-            "active": true,
+            "active": false,
             "constraints": [],
             "groups": [
                 143,
