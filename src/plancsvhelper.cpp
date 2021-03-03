@@ -489,47 +489,8 @@ bool PlanCsvHelper::writePlanningExamsResultFile(Plan* plan) {
         }
       }
     }
-    planningExamsResultFile.close();
-    return true;
   }
-
-  for (Module* module : plan->getModules()) {
-    // TODO Check somewhere else
-    if (module->getOrigin() == "EIT") {
-      // SPA-algorithmus fails if there are EIT exams, because "Prüfungen von
-      // EIT müssen fest abgesprochen sein!!"
-      continue;
-    }
-
-    // Only one constraint is possible, because the legacy algorithm does not
-    // support more
-    if (module->getConstraints().size() >= 1) {
-      fileStream << module->getConstraints()[0]->getName();
-    }
-    fileStream << ";";
-
-    // TODO Check somewhere, that groupnames do not contain commas
-    QString divider = "";
-    for (Group* group : module->getGroups()) {
-      fileStream << divider << group->getName();
-      divider = ",";
-    }
-    fileStream << ";";
-
-    fileStream << module->getName() << ";";
-    fileStream << module->getNumber() << ";";
-    fileStream << module->getOrigin() << ";";
-    // TODO find out what K or P means and add to datamodel
-    fileStream << "K"
-               << ";";
-    // TODO add duration to datamodel and add it here
-    fileStream << "";
-
-    fileStream << "\n";
-  }
-  fileStream << "-ENDE-;;;;;;";
-
-  examsFile.close();
+  planningExamsResultFile.close();
   return true;
 }
 
