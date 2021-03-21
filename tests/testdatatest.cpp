@@ -1,15 +1,16 @@
 #ifndef TESTDATA_TEST_CPP
 #define TESTDATA_TEST_CPP
 
-#include <gmock/gmock-matchers.h>
-#include <gtest/gtest.h>
+#include "plan.h"
+#include "testdatahelper.h"
 #include <QFile>
 #include <QJsonDocument>
 #include <QSharedPointer>
 #include <QString>
 #include <QTemporaryDir>
-#include "plan.h"
-#include "testdatahelper.h"
+#include <QUuid>
+#include <gmock/gmock-matchers.h>
+#include <gtest/gtest.h>
 
 using namespace testing;
 
@@ -31,6 +32,30 @@ TEST(testDataTests, getValidJsonPlanWorks) {
 TEST(testDataTests, getInvalidJsonPlanWorks) {
   QJsonValue plan = getInvalidJsonPlan();
   ASSERT_TRUE(plan.isObject());
+}
+
+TEST(testDataTests, validPlanSeemsToLoadCorrectly) {
+  QJsonValue jsonPlan = getValidJsonPlan();
+  Plan plan;
+
+  plan.fromJsonObject(jsonPlan.toObject());
+  ASSERT_GT(plan.getConstraints().size(), 0);
+  Group *group = plan.getConstraints()[0];
+  ASSERT_EQ(group->getId(), QUuid::fromString(QString(
+                                "{00000000-0000-0000-0000-000000000130}")));
+  ASSERT_EQ(group->getName(), "Woche1");
+}
+
+TEST(testDataTests, invalidPlanSeemsToLoadCorrectly) {
+  QJsonValue jsonPlan = getInvalidJsonPlan();
+  Plan plan;
+
+  plan.fromJsonObject(jsonPlan.toObject());
+  ASSERT_GT(plan.getConstraints().size(), 0);
+  Group *group = plan.getConstraints()[0];
+  ASSERT_EQ(group->getId(), QUuid::fromString(QString(
+                                "{00000000-0000-0000-0000-000000000130}")));
+  ASSERT_EQ(group->getName(), "Woche1");
 }
 
 TEST(testDataTests, prepareScheduledDirectoryWorks) {
